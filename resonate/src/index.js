@@ -1,7 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './cssfiles/index.css';
-import Home from './Home';
+import Home from './Navbar';
+import Navbar from './Navbar';
 import ExploreMusic from './ExploreMusic';
 import Communities from './Communities';
 import Events from './Events';
@@ -12,13 +13,28 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/exploremusic" element={<ExploreMusic />} />
-        <Route path="/communities" element={<Communities />} />
-        <Route path="/events" element={<Events />} />
-        <Route path="/mycollections" element={<MyCollections />} />
-      </Routes>
+      <div id='fullPage'>
+        <Navbar />
+        <div id='sideBar_and_routeContainer'>
+          <div id='sideBar'>
+            <div className='sideBarItems'><p>Explore Music</p></div>
+            <div className='sideBarItems'><p>Communities</p></div>
+            <div className='sideBarItems'><p>Events</p></div>
+            <div className='sideBarItems'><p>My Collections</p></div>
+
+          </div>
+          <div id='routeContainer'>  
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/exploremusic" element={<ExploreMusic />} />
+              <Route path="/communities" element={<Communities />} />
+              <Route path="/events" element={<Events />} />
+              <Route path="/mycollections" element={<MyCollections />} />
+            </Routes>
+          </div>
+        </div>
+      </div>
+      
     </BrowserRouter>
   </React.StrictMode>
 );

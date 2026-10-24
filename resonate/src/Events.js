@@ -1,7 +1,7 @@
-import '.cssfiles/events.css';
+import './cssfiles/events.css';
 
 function Events() {
-  return <h1>Events</h1>;
+  return <h1>Events Content Here</h1>;
 }
 
 export default Events;
