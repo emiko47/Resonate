@@ -5,7 +5,7 @@
       <main id='fullPage'>
         <header id='topBar'>
           <nav id='leftPart' aria-label='Primary navigation'>
-            <button type='button'>Chat</button>
+            <button type='button'><img width="30" height="30" src="https://img.icons8.com/ios-filled/50/chat.png" alt="chat"/></button>
             <button type='button'>Home</button>
             <button type='button'>Search</button>
           </nav>
