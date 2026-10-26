@@ -1,11 +1,10 @@
-import './cssfiles/home.css';
-
 function Home() {
   return (
-    <div>
-      <h1>Home Content Here</h1>
-    </div>
-  )
+    <>
+      <h2>Home</h2>
+      <p>Home page content will appear here.</p>
+    </>
+  );
 }
 
 export default Home;

@@ -1,18 +1,36 @@
-import './cssfiles/home.css';
+  import { Outlet } from 'react-router-dom';
 
-function Navbar() {
-  return (
+  function Navbar() {
+    return (
+      <main id='fullPage'>
+        <header id='topBar'>
+          <nav id='leftPart' aria-label='Primary navigation'>
+            <button type='button'>Chat</button>
+            <button type='button'>Home</button>
+            <button type='button'>Search</button>
+          </nav>
+          <div id='centerPart'>
+            <h1>Resonate</h1>
+          </div>
+          <nav id='rightPart' aria-label='Account navigation'>
+            <button type='button'>Notifications</button>
+            <button type='button'>Settings</button>
+            <button type='button'>Profile</button>
+          </nav>
+        </header>
+        <div id='sideBar_and_routeContainer'>
+          <nav id='sideBar' aria-label='Discover navigation'>
+            <button className='sideBarItems' type='button'>Explore Music</button>
+            <button className='sideBarItems' type='button'>Communities</button>
+            <button className='sideBarItems' type='button'>Events</button>
+            <button className='sideBarItems' type='button'>My Collections</button>
+          </nav>
+          <section id='routeContainer'>
+            <Outlet />
+          </section>
+        </div>
+      </main>
+    );
+  }
 
-
-      <div id='topBar'>
-        <div id='leftPart'><p>Chat</p><p>Home</p><p>Search</p></div>
-        <div id='centerPart'><h1>Resonate</h1></div>
-        <div id='rightPart'><p>Notifications</p><p>Settings</p><p>Profile</p></div>
-      </div>
-
-
-      
-  );
-}
-
-export default Navbar;
+  export default Navbar;
