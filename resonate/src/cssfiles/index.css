@@ -88,6 +88,8 @@ code {
     border-left: 0;
     border-right: 0;
     cursor: pointer;
+    font: inherit;
+    text-decoration: none;
 }
 
 #leftPart button,
@@ -99,11 +101,13 @@ code {
     cursor: pointer;
 }
 
-button:hover {
+button:hover,
+.sideBarItems:hover {
     background-color: #f0f0f0;
 }
 
-button:focus-visible {
+button:focus-visible,
+.sideBarItems:focus-visible {
     outline: 3px solid #2563eb;
     outline-offset: -3px;
 }
