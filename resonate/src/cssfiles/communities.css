@@ -1,0 +1,30 @@
+#communitiesRoot {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+.communityPreview {
+    width: 90%;
+    margin-bottom: 5%;
+}
+
+.communityPreviewCols {
+    display: flex;
+    flex-direction: row;
+}
+
+.communityPreviewTitleRow {
+    display: flex;
+    flex-direction: row;
+}
+
+.communityPreviewDescription {
+    padding: auto;
+}
+
+.communityPreviewStatsCol {
+    display: flex;
+    flex-direction: column;
+    margin-left: 5%;
+}
