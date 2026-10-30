@@ -1,34 +1,34 @@
+import { genres } from "./Genres";
+
 const communitiesData = [
     {
-        name: "Test 1",
-        description: "abcd",
-        tags: ["Pop"],
+        name: "Calgary Rap",
+        description: "The community for local rappers in Calgary",
+        tags: [genres[1]],
         lastPost: Date.now()-2*1000,
-        numberPosts: 2
+        numberPosts: 55
     },
     {
-        name: "Test 2",
-        description: "abcd",
-        tags: ["Rap"],
+        name: "2000s Pop",
+        description: "2000s Pop",
+        tags: [genres[0]],
         lastPost: Date.now()-15*60*1000,
-        numberPosts: 2
+        numberPosts: 367
     },
     {
-        name: "Test 3",
-        description: "abcd",
-        tags: ["Rock"],
-        lastPost: Date.now()-12*60*60*1000,
-        numberPosts: 2
-    },
-    {
-        name: "Test 4",
-        description: "abcd",
-        tags: ["zzzzz", "Pop", "Long genre"],
+        name: "The Jazz Room",
+        description: "A place to discuss all things Jazz",
+        tags: [genres[3], genres[4]],
         lastPost: Date.now()-25*60*60*1000,
-        numberPosts: 2
+        numberPosts: 993
     },
+    {
+        name: "Bob's Country Bunker",
+        description: "We got both kinds, we got country and western!",
+        tags: [genres[5], genres[6]],
+        lastPost: 331020000,
+        numberPosts: 1
+    }
 ]
 
-const defaultGenres = ["Pop", "Rap"];
-
-export { communitiesData, defaultGenres };
+export { communitiesData };
