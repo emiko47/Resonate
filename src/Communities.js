@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './cssfiles/communities.css';
 import { TagList } from './CommonComponents';
 import { formatTimeAgo } from './Functions';
@@ -65,8 +66,11 @@ function Communities() {
 
 function CommunityComponent({id}) {
   const communityData = communitiesData[id];
+  const navigate = useNavigate();
   return (
-    <button class="communityPreview">
+    <button class="communityPreview" onClick={() => {
+      navigate(communityData.id);
+    }}>
       <div class="communityPreviewSummaryCol">
         <div class="communityPreviewTitleRow">
           <span class="communityPreviewTitle">{communityData.name}</span>
