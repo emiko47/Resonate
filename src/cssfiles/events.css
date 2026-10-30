@@ -1,0 +1,148 @@
+.events-page {
+    box-sizing: border-box;
+    display: grid;
+    grid-template-columns: minmax(330px, 1.25fr) minmax(300px, 0.9fr);
+    gap: 24px;
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    padding: 28px;
+}
+
+.event-list-panel {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+}
+
+.events-heading {
+    margin-bottom: 16px;
+}
+
+.events-heading p {
+    margin: 0 0 2px;
+    color: #6b7280;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.events-heading h2 {
+    margin: 0;
+    font-size: 1.8rem;
+}
+
+.event-list {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 12px;
+    min-height: 0;
+    overflow-y: auto;
+    padding-right: 8px;
+}
+
+.event-card {
+    display: flex;
+    gap: 14px;
+    border: 1px solid #d1d5db;
+    border-radius: 10px;
+    background-color: #ffffff;
+    padding: 14px;
+}
+
+.event-card-date {
+    display: flex;
+    width: 85px;
+    flex: 0 0 85px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-right: 1px solid #d1d5db;
+    padding-right: 10px;
+    color: #374151;
+    box-sizing: border-box;
+}
+
+.event-card-date span {
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.event-card-date strong {
+    font-size: 1.45rem;
+    line-height: 1;
+}
+
+.event-card-content h3,
+.event-card-content p {
+    margin: 0;
+}
+
+.event-card-content h3 {
+    font-size: 1rem;
+}
+
+.event-card-content p {
+    color: #4b5563;
+    font-size: 0.85rem;
+}
+
+.event-card-content .event-description {
+    margin-top: 7px;
+}
+
+.create-event-button {
+    align-self: flex-start;
+    margin-top: 18px;
+    border: 1px solid #111827;
+    border-radius: 7px;
+    background-color: #111827;
+    color: #ffffff;
+    cursor: pointer;
+    padding: 10px 16px;
+}
+
+.create-event-button:hover {
+    background-color: #374151;
+}
+
+.event-map-panel {
+    min-height: 0;
+    overflow: hidden;
+    border: 1px solid #d1d5db;
+    border-radius: 10px;
+}
+
+.events-map {
+    width: 100%;
+    height: 100%;
+    min-height: 360px;
+}
+
+.event-map-pin {
+    background: transparent;
+    border: 0;
+}
+
+.event-map-pin span {
+    display: block;
+    box-sizing: border-box;
+    width: 20px;
+    height: 20px;
+    border: 3px solid #ffffff;
+    border-radius: 50% 50% 50% 0;
+    background: #dc2626;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.35);
+    transform: rotate(-45deg);
+}
+
+@media (max-width: 850px) {
+    .events-page {
+        grid-template-columns: 1fr;
+        grid-template-rows: minmax(360px, 1fr) minmax(360px, 1fr);
+        overflow-y: auto;
+    }
+}
