@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom';
-import './cssfiles/community.css';
+import './cssfiles/incommunity.css';
 import './cssfiles/commoncomponents.css';
 import { formatTimeAgo } from './Functions';
 
@@ -69,4 +69,4 @@ function PostComponent({id}) {
   )
 }
 
-export { Community };
+export default Community;

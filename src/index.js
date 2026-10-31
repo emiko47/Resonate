@@ -6,7 +6,7 @@ import Navbar from './Navbar';
 import Home from './Home';
 import ExploreMusic from './ExploreMusic';
 import Communities from './Communities';
-import { Community } from './Community';
+import Community from './InCommunity';
 import Events from './Events';
 import MyCollections from './MyCollections';
 
