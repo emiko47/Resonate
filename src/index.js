@@ -6,6 +6,7 @@ import Navbar from './Navbar';
 import Home from './Home';
 import ExploreMusic from './ExploreMusic';
 import Communities from './Communities';
+import CreateCommunity from './CreateCommunity';
 import Community from './InCommunity';
 import Events from './Events';
 import MyCollections from './MyCollections';
@@ -22,6 +23,7 @@ root.render(
             <Route index element={<Communities />}/>
             <Route path=':communityId' element={<Community />}/>
           </Route>
+          <Route path='createcommunity' element={<CreateCommunity />} />
           <Route path='events' element={<Events />} />
           <Route path='mycollections' element={<MyCollections />} />
         </Route>

@@ -10,6 +10,7 @@ import { defaultGenres } from './mockdata/Genres';
 function Communities() {
   const [activeTab, setActiveTab] = useState(0);
   const [filterGenres, setFilterGenres] = useState(defaultGenres);
+  const navigate = useNavigate();
 
   const data = [
     { label: 'Discover', communityIds: [0, 1, 2, 3] },
@@ -43,7 +44,9 @@ function Communities() {
             <CommunityComponent id={id} />
           ))}
         </div>
-        <button id="createCommunityButton" type="button">Create Community</button>
+        <button id="createCommunityButton" type="button" onClick={() => {
+          navigate("../createcommunity");
+        }}>Create Community</button>
       </div>
 
       {/* Filter pane */}
