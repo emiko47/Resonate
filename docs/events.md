@@ -1,6 +1,6 @@
 # Events contribution
 
-Branch: `codex/events-screen`, based on `origin/main` (`e3d19211`).
+Branch: `events-screen`, based on `origin/main` (`e3d19211`).
 
 ## Style references checked
 
