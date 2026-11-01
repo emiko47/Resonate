@@ -53,9 +53,12 @@ function Community() {
 }
 
 function PostComponent({id}) {
+  const navigate = useNavigate();
   const postData = postsData[id];
   return (
-    <button class="postPreview">
+    <button class="postPreview" onClick={() => {
+      navigate(`${postData.id}`);
+    }}>
       <div class="postPreviewSummaryCol">
         <div class="postPreviewTitleRow">
           <span class="postPreviewTitle">{postData.name}</span>

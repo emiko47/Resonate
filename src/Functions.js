@@ -12,6 +12,16 @@ function formatTimeAgo(timestamp) {
 }
 
 
+function formatTimeAgoOrDate(timestamp) {
+  const ms = new Date() - new Date(timestamp);
+  if (false && Math.floor(ms / 86400000) === 0) {
+    return formatTimeAgo(timestamp)
+  } else {
+    return new Date(timestamp).toLocaleDateString("en-CA", {year: 'numeric', month: 'long', day: 'numeric'});
+  }
+}
+
+
 function stringToColour(str) {
   let hash = 0;
   for (let i = 0; i < str.length; i++) {
@@ -27,4 +37,4 @@ function stringToColour(str) {
 }
 
 
-export { formatTimeAgo, stringToColour };
+export { formatTimeAgo, formatTimeAgoOrDate, stringToColour };
