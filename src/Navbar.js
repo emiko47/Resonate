@@ -1,6 +1,15 @@
-  import { NavLink, Outlet } from 'react-router-dom';
+  import { NavLink, Outlet, useLocation } from 'react-router-dom';
 
   function Navbar() {
+    const sideBarItems = [
+      {to: '/exploremusic', label: 'Explore Music'},
+      {to: '/communities', label: 'Communities'},
+      {to: '/events', label: 'Events'},
+      {to: '/mycollections', label: 'My Collections'}
+    ];
+  
+    const location = useLocation();
+
     return (
       <main id='fullPage'>
         <header id='topBar'>
@@ -22,10 +31,14 @@
         </header>
         <div id='sideBar_and_routeContainer'>
           <nav id='sideBar' aria-label='Discover navigation'>
-            <NavLink className='sideBarItems' to='/exploremusic'>Explore Music</NavLink>
-            <NavLink className='sideBarItems' to='/communities'>Communities</NavLink>
-            <NavLink className='sideBarItems' to='/events'>Events</NavLink>
-            <NavLink className='sideBarItems' to='/mycollections'>My Collections</NavLink>
+            {sideBarItems.map((item) => {
+              const buttonStyle = {
+                fontWeight: location.pathname.startsWith(item.to) ? "600" : "400"
+              };
+              return (
+                <NavLink className='sideBarItems' style={buttonStyle} to={item.to}>{item.label}</NavLink>
+              );
+            })}
           </nav>
           <section id='routeContainer'>
             <Outlet />
