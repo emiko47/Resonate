@@ -98,6 +98,37 @@ function TagList({names, editableCallback = undefined, creatable = false}) {
   );
 }
 
+function UserInfo({username}) {
+  return (
+    <div>
+      <div class="userDropdownHeaderRow">
+        <span>{defaultUser.displayname} · {defaultUser.location.shareText}</span>
+        <div class="userDropdownMatchOuter">
+          <div class="userDropdownMatchInner" />
+          <span class="userDropdownMatchLabel">80%</span>
+        </div>
+        <button class="iconButton">
+          <img class="iconButtonImg" width="18" height="18" src="https://img.icons8.com/material-rounded/24/plus-2-math--v1.png" alt="save user"/>
+        </button>
+      </div>
+      <p class="userDropdownBio">{defaultUser.bio}</p>
+      <div class="userDropdownListsRow">
+        <div class="userDropdownTagList">
+          <TagList names={defaultUser.genres} />
+        </div>
+        <div>
+          <span>You should check out:</span>
+          <ol>
+            {defaultUser.topArists.map((artist) => (
+              <li>{artist}</li>
+            ))}
+          </ol>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 function User({username}) {
   const [dropdownIsVisible, setDropdownIsVisible] = useState(false);
   const [dropdownPosition, setDropdownPosition] = useState({
@@ -117,30 +148,7 @@ function User({username}) {
           setDropdownIsVisible(false);
         }}>
           <div class="userDropdownInner">
-            <div class="userDropdownHeaderRow">
-              <span>{defaultUser.displayname} · {defaultUser.location.shareText}</span>
-              <div class="userDropdownMatchOuter">
-                <div class="userDropdownMatchInner" />
-                <span class="userDropdownMatchLabel">80%</span>
-              </div>
-              <button class="iconButton">
-                <img class="iconButtonImg" width="18" height="18" src="https://img.icons8.com/material-rounded/24/plus-2-math--v1.png" alt="save user"/>
-              </button>
-            </div>
-            <p class="userDropdownBio">{defaultUser.bio}</p>
-            <div class="userDropdownListsRow">
-              <div class="userDropdownTagList">
-                <TagList names={defaultUser.genres} />
-              </div>
-              <div>
-                <span>You should check out:</span>
-                <ol>
-                  {defaultUser.topArists.map((artist) => (
-                    <li>{artist}</li>
-                  ))}
-                </ol>
-              </div>
-            </div>
+            <UserInfo username={username} />
           </div>
         </div>, document.body
       )}
@@ -149,4 +157,4 @@ function User({username}) {
 }
 
 
-export { TagList, User }
+export { TagList, User, UserInfo }
