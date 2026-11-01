@@ -15,7 +15,9 @@
           <nav id='rightPart' aria-label='Account navigation'>
             <button type='button'><img width="30" height="30" src="https://img.icons8.com/ios/50/appointment-reminders--v1.png" alt="appointment-reminders--v1"/></button>
             <button type='button'><img width="30" height="30" src="https://img.icons8.com/ios/50/settings--v1.png" alt="settings--v1"/></button>
-            <button type='button'><img width="30" height="30" src="https://img.icons8.com/fluency-systems-regular/48/user-male-circle--v1.png" alt="user-male-circle--v1"/></button>
+            <NavLink to='/myprofile'>
+              <button type='button'><img width="30" height="30" src="https://img.icons8.com/fluency-systems-regular/48/user-male-circle--v1.png" alt="user-male-circle--v1"/></button>
+            </NavLink>
           </nav>
         </header>
         <div id='sideBar_and_routeContainer'>
