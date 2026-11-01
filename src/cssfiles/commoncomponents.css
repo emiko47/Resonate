@@ -64,6 +64,7 @@
 .userDropdownHeaderRow {
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
     gap: 4px;
     align-items: center;
     width: 100%;
