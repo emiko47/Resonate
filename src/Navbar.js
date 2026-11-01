@@ -8,10 +8,10 @@
 
   function Navbar() {
     const sideBarItems = [
-      {to: '/exploremusic', label: 'Explore Music'},
-      {to: '/communities', label: 'Communities'},
-      {to: '/events', label: 'Events'},
-      {to: '/mycollections', label: 'My Collections'}
+      {to: '/exploremusic', label: 'Explore Music', other: []},
+      {to: '/communities', label: 'Communities', other: ['/createcommunity', '/createpost']},
+      {to: '/events', label: 'Events', other: []},
+      {to: '/mycollections', label: 'My Collections', other: []}
     ];
   
     const location = useLocation();
@@ -67,7 +67,7 @@
           <nav id='sideBar' aria-label='Discover navigation'>
             {sideBarItems.map((item) => {
               const buttonStyle = {
-                fontWeight: location.pathname.startsWith(item.to) ? "600" : "400"
+                fontWeight: location.pathname.startsWith(item.to) || item.other.includes(location.pathname) ? "600" : "400"
               };
               return (
                 <NavLink className='sideBarItems' style={buttonStyle} to={item.to}>{item.label}</NavLink>
