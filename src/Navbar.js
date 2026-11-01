@@ -1,4 +1,4 @@
-  import { NavLink, Outlet, useLocation } from 'react-router-dom';
+  import { NavLink, Link, Outlet, useLocation } from 'react-router-dom';
 
   function Navbar() {
     const sideBarItems = [
@@ -17,7 +17,9 @@
             <NavLink to='/chat'>
               <button type='button'><img width="30" height="30" src="https://img.icons8.com/ios-filled/50/chat.png" alt="chat"/></button>
             </NavLink>
-            <button type='button'><img width="30" height="30" src="https://img.icons8.com/ios/50/home--v1.png" alt="home--v1"/></button>
+            <Link to="/" aria-label="Home">
+              <button type='button'><img width="30" height="30" src="https://img.icons8.com/ios/50/home--v1.png" alt="home--v1"/></button>
+            </Link>
             <NavLink to='/search'>
               <button type='button'><img width="30" height="30" src="https://img.icons8.com/ios/50/search--v1.png" alt="search--v1"/></button>
             </NavLink>
