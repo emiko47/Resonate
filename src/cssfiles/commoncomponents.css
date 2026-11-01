@@ -34,3 +34,85 @@
     padding: 0px;
     margin: 0px;
 }
+
+.userButton {
+    display: inline-flex;
+    padding: 0;
+    margin: 0;
+    background-color: transparent;
+    border-color: transparent;
+    align-items: center;
+    cursor: pointer;
+}
+
+.userDropdownOuter {
+    position: absolute;
+    z-index: 100;
+}
+
+.userDropdownInner {
+    margin: 20px;
+    padding: 4px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    background-color: white;
+    border: 2px solid black;
+    font-size: 0.85rem;
+}
+
+.userDropdownHeaderRow {
+    display: flex;
+    flex-direction: row;
+    gap: 4px;
+    align-items: center;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.userDropdownMatchOuter {
+    display: grid;
+    grid-template-areas: "overlay";
+    width: 100px;
+    border: 1px solid black;
+    height: 18px;
+}
+
+.userDropdownMatchOuter > * {
+    grid-area: overlay;
+}
+
+.userDropdownMatchInner {
+    width: 80%;
+    height: 18px;
+    background-color: #11d400;
+    justify-self: left;
+}
+
+.userDropdownMatchLabel {
+    justify-self: center;
+    z-index: 2;
+}
+
+.userDropdownBio {
+    margin-top: 0;
+    margin-bottom: 0;
+    max-width: 300px;
+}
+
+.userDropdownListsRow {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.userDropdownTagList {
+    max-width: 150px;
+}
+
+.userDropdownListsRow ol {
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-left: 20px;
+}

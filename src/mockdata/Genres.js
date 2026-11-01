@@ -2,8 +2,12 @@ const genres = [
     "Pop",
     "Rap",
     "Rock",
-    "Long genre",
-    "Jazz"
+    "Instrumental",
+    "Jazz",
+    "Country",
+    "Western"
 ]
 
-export { genres }
+const defaultGenres = [genres[0], genres[1]];
+
+export { genres, defaultGenres }

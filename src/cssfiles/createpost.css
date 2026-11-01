@@ -1,0 +1,72 @@
+#createPostRoot {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    padding: 28px;
+}
+
+#createPostTitleArea {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+#createPostTitleRow {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#createPostTitleRow > span {
+    font-size: 1.15rem;
+}
+
+#createPostCommunityLabel {
+    color: #6b7280;
+}
+
+#createPostDescriptionBox {
+    display: flex;
+    flex-direction: column;
+}
+
+#createPostDescriptionBox > span {
+    font-size: 1.15rem;
+}
+
+#createPostDescriptionText {
+    width: 100%;
+    resize: none;
+    min-height: 100px;
+    max-height: 400px;
+}
+
+#createPostActionsRow {
+    display: flex;
+    flex-direction: row;
+    gap: 8px
+}
+
+#createPostActionsRow > button {
+    align-self: flex-start;
+    border-radius: 7px;
+    cursor: pointer;
+    padding: 10px 16px;
+}
+
+#createPostCreateButton {
+    border: 1px solid #111827;
+    background-color: #111827;
+    color: #ffffff;
+}
+
+#createPostDiscardButton {
+    border: 1px solid #db0012;
+    background-color: #db0012;
+    color: #ffffff;
+}

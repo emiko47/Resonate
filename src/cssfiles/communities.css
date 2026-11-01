@@ -1,30 +1,100 @@
 #communitiesRoot {
-    display: flex;
-    flex-direction: row;
+    box-sizing: border-box;
+    display: grid;
+    grid-template-columns: minmax(330px, 1.5fr) minmax(200px, 0.5fr);
+    gap: 48px;
     width: 100%;
+    height: 100%;
+    min-height: 0;
+    padding: 28px;
+}
+
+#communitiesTabs {
+    display: grid;
+    grid-template-columns: 0.5fr 0.5fr;
+    width: 100%;
+    padding-bottom: 16px;
+}
+
+.communityTab {
+    background-color: transparent;
+    border: 0px solid black;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    font-size: 1.35rem;
+}
+
+.communitiesList {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 12px;
+    min-height: 0;
+    overflow-y: auto;
 }
 
 .communityPreview {
-    width: 90%;
-    margin-bottom: 5%;
+    box-sizing: border-box;
+    display: grid;
+    grid-template-columns: minmax(200px, 0.75fr) minmax(50px, 0.5fr);
+    gap: 14px;
+    border: 1px solid #d1d5db;
+    border-radius: 10px;
+    background-color: #ffffff;
+    padding: 14px;
 }
 
-.communityPreviewCols {
+.communityPreviewSummaryCol {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
+    align-items: flex-start;
 }
 
 .communityPreviewTitleRow {
     display: flex;
     flex-direction: row;
+    gap: 14px;
+}
+
+.communityPreviewTitle {
+    font-weight: 600;
 }
 
 .communityPreviewDescription {
-    padding: auto;
+    font-size: 0.85rem;
+    color: #6b7280;
+    padding: 0px;
+    margin: 0px;
 }
 
 .communityPreviewStatsCol {
     display: flex;
     flex-direction: column;
-    margin-left: 5%;
+    align-items: flex-end;
+    font-size: 0.85rem;
+    color: #6b7280;
+}
+
+#createCommunityButton {
+    align-self: flex-start;
+    margin-top: 18px;
+    border: 1px solid #111827;
+    border-radius: 7px;
+    background-color: #111827;
+    color: #ffffff;
+    cursor: pointer;
+    padding: 10px 16px;
+}
+
+#communitiesFilterCol {
+    border-left: 1px solid #d1d5db;
+    padding-left: 10px;
+}
+
+#communitiesFilterTitle {
+    font-size: 1.35rem;
+}
+
+.communitiesFilterLabel {
+    color: #6b7280;
 }

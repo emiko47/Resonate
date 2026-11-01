@@ -1,12 +1,16 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './cssfiles/communities.css';
-import { communitiesData, defaultGenres } from './mockdata/Communities';
 import { TagList } from './CommonComponents';
 import { formatTimeAgo } from './Functions';
+
+import { communitiesData } from './mockdata/Communities';
+import { defaultGenres } from './mockdata/Genres';
 
 function Communities() {
   const [activeTab, setActiveTab] = useState(0);
   const [filterGenres, setFilterGenres] = useState(defaultGenres);
+  const navigate = useNavigate();
 
   const data = [
     { label: 'Discover', communityIds: [0, 1, 2, 3] },
@@ -16,33 +20,46 @@ function Communities() {
   return (
     <div id="communitiesRoot">
       {/* Communities tabs with lists */}
-      <div id="communitiesLeft">
+      <div>
         {/* Tab Headers */}
-        <div>
-          {data.map((tab, index) => (
-            <button key={index} onClick={() => setActiveTab(index)}>
-              {tab.label}
-            </button>
-          ))}
+        <div id="communitiesTabs">
+          {data.map((tab, index) => {
+            const buttonStyle = {
+              borderTopWidth: activeTab === index ? '2px' : '0px',
+              borderBottomWidth: activeTab === index ? '0px' : '2px',
+              borderLeftWidth: activeTab === index ? '2px' : '0px',
+              borderRightWidth: activeTab === index ? '2px' : '0px',
+              color: activeTab === index ? '#000000' : '#333'
+            }
+            return (
+              <button class="communityTab" key={index} onClick={() => setActiveTab(index)} style={buttonStyle}>
+                {tab.label}
+              </button>
+            );
+          })}
         </div>
         {/* Tab Panels */}
-        <div>
+        <div class="communitiesList">
           {data[activeTab].communityIds.map((id) => (
             <CommunityComponent id={id} />
           ))}
         </div>
+        <button id="createCommunityButton" type="button" onClick={() => {
+          navigate("../createcommunity");
+        }}>Create Community</button>
       </div>
 
       {/* Filter pane */}
-      <div id="communitiesRight">
+      <div id="communitiesFilterCol">
         <div>
-          <span>Filters</span>
+          <span id="communitiesFilterTitle">Filters</span>
         </div>
         <div>
-          Keywords
+          <span class="communitiesFilterLabel">Search title &amp; description</span>
+          <input id="communitiesKeywords" type="text"></input>
         </div>
         <div>
-          <span>Genres</span>
+          <span class="communitiesFilterLabel">Genres</span>
           <TagList names={filterGenres} editableCallback={setFilterGenres} />
         </div>
       </div>
@@ -52,22 +69,23 @@ function Communities() {
 
 function CommunityComponent({id}) {
   const communityData = communitiesData[id];
+  const navigate = useNavigate();
   return (
-    <button class="communityPreview">
-      <div class="communityPreviewCols">
-        <div>
-          <div class="communityPreviewTitleRow">
-            <span class="communityPreviewTitle">{communityData.name}</span>
-            <TagList names={communityData.tags} />
-          </div>
-          <p class="communityPreviewDescription">
-            {communityData.description}
-          </p>
+    <button class="communityPreview" onClick={() => {
+      navigate(communityData.id);
+    }}>
+      <div class="communityPreviewSummaryCol">
+        <div class="communityPreviewTitleRow">
+          <span class="communityPreviewTitle">{communityData.name}</span>
+          <TagList names={communityData.tags} />
         </div>
-        <div class="communityPreviewStatsCol">
-          <span>{formatTimeAgo(communityData.lastPost)}</span>
-          <span>{communityData.numberPosts} posts</span>
-        </div>
+        <p class="communityPreviewDescription">
+          {communityData.description}
+        </p>
+      </div>
+      <div class="communityPreviewStatsCol">
+        <span>Last post {formatTimeAgo(communityData.lastPost)}</span>
+        <span>{communityData.numberPosts} posts</span>
       </div>
     </button>
   );

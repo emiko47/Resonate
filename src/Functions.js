@@ -8,7 +8,17 @@ function formatTimeAgo(timestamp) {
   if (days > 0) return `${days} day${days > 1 ? 's' : ''} ago`;
   if (hours > 0) return `${hours} hour${hours > 1 ? 's' : ''} ago`;
   if (minutes > 0) return `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
-  return seconds <= 30 ? "Just now" : `${seconds} second${seconds > 1 ? 's' : ''} ago`;
+  return "just now";
+}
+
+
+function formatTimeAgoOrDate(timestamp) {
+  const ms = new Date() - new Date(timestamp);
+  if (false && Math.floor(ms / 86400000) === 0) {
+    return formatTimeAgo(timestamp)
+  } else {
+    return new Date(timestamp).toLocaleDateString("en-CA", {year: 'numeric', month: 'long', day: 'numeric'});
+  }
 }
 
 
@@ -27,4 +37,22 @@ function stringToColour(str) {
 }
 
 
-export { formatTimeAgo, stringToColour };
+function calculateDropdownPosition(event) {
+  const newPosition = {};
+  const targetX = event.pageX;
+  if (targetX < document.documentElement.scrollWidth*0.75) {
+    newPosition.left = `${targetX}px`;
+  } else {
+    newPosition.right = `${document.documentElement.scrollWidth-targetX}px`;
+  }
+  const targetY = event.pageY;
+  if (targetY < document.documentElement.scrollHeight*0.75) {
+    newPosition.top = `${targetY}px`;
+  } else {
+    newPosition.bottom = `${document.documentElement.scrollHeight-targetY}px`;
+  }
+  return newPosition;
+}
+
+
+export { formatTimeAgo, formatTimeAgoOrDate, stringToColour, calculateDropdownPosition };
