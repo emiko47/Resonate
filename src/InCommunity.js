@@ -1,4 +1,5 @@
 import { useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import './cssfiles/incommunity.css';
 import './cssfiles/commoncomponents.css';
 import { formatTimeAgo } from './Functions';
@@ -8,6 +9,7 @@ import { postsData } from './mockdata/Communities';
 function Community() {
   const {communityId} = useParams();
   console.log(communityId);
+  const navigate = useNavigate();
 
   const data = [0, 1];
 
@@ -43,7 +45,9 @@ function Community() {
           &gt;
         </button>
       </div>
-      <button id="createPostButton">Create Post</button>
+      <button id="createPostButton" onClick={() => {
+        navigate("/createpost");
+      }}>Create Post</button>
     </div>
   );
 }
