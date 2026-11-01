@@ -12,6 +12,39 @@
   justify-content: flex-start;
 }
 
+#searchHeaderRow {
+    display: flex;
+    flex-direction: row;
+    gap: 24px;
+    align-items: baseline;
+}
+
+#searchHeaderRow > h2 {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.searchHeaderRowGroup {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.searchHeaderRowGroup > span {
+    margin-right: 8px;
+}
+
+.searchSection {
+    display: flex;
+    flex-direction: column;
+}
+
+.searchSection > h2 {
+    margin-top: 0;
+    margin-bottom: 0;
+    font-size: 1.3rem;
+}
+
 .searchCarouselTrack {
   display: flex;
   flex-direction: row;

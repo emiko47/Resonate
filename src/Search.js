@@ -16,19 +16,21 @@ function Search() {
   return (
     <div id="searchRoot">
       {/* Search criteria */}
-      <div>
+      <div id="searchHeaderRow">
         <h2>Search</h2>
-        <div>
+        <div class="searchHeaderRowGroup">
           <input type="text" placeholder="Search by title &amp; content"/>
-          <button class="iconButton">img</button>
+          <button class="iconButton">
+            <img width="15" height="15" src="https://img.icons8.com/ios/50/search--v1.png" alt="search"/>
+          </button>
         </div>
-        <div>
-          <span>Filter by genre</span>
+        <div class="searchHeaderRowGroup">
+          <span>Filter by genre:</span>
           <TagList names={genres} editableCallback={updateGenres} />
         </div>
       </div>
       {/* Post results */}
-      <div>
+      <div class="searchSection">
         <h2>Posts</h2>
         <div className="searchCarouselTrack" ref={postsTrackRef}>
           {searchCommunityPosts.map((post) => (
@@ -51,7 +53,7 @@ function Search() {
         </div>
       </div>
       {/* Event results */}
-      <div>
+      <div class="searchSection">
         <h2>Events</h2>
         <div className="searchCarouselTrack" ref={eventsTrackRef}>
           {searchEvents.map((event) => (
@@ -71,7 +73,7 @@ function Search() {
         </div>
       </div>
       {/* User results */}
-      <div>
+      <div class="searchSection">
         <h2>Users</h2>
         <div className="searchCarouselTrack" ref={eventsTrackRef}>
           {searchEvents.map((event) => (
