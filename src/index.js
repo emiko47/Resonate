@@ -12,6 +12,7 @@ import CreatePost from './CreatePost';
 import Post from './Post';
 import Events from './Events';
 import MyCollections from './MyCollections';
+import Chat from './Chat';
 import Profile from './Profile';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -33,6 +34,7 @@ root.render(
           <Route path='createpost' element={<CreatePost />} />
           <Route path='events' element={<Events />} />
           <Route path='mycollections' element={<MyCollections />} />
+          <Route path='chat' element={<Chat />} />
           <Route path='myprofile' element={<Profile />} />
         </Route>
       </Routes>
