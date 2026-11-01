@@ -37,4 +37,22 @@ function stringToColour(str) {
 }
 
 
-export { formatTimeAgo, formatTimeAgoOrDate, stringToColour };
+function calculateDropdownPosition(event) {
+  const newPosition = {};
+  const targetX = event.pageX;
+  if (targetX < document.documentElement.scrollWidth*0.75) {
+    newPosition.left = `${targetX}px`;
+  } else {
+    newPosition.right = `${document.documentElement.scrollWidth-targetX}px`;
+  }
+  const targetY = event.pageY;
+  if (targetY < document.documentElement.scrollHeight*0.75) {
+    newPosition.top = `${targetY}px`;
+  } else {
+    newPosition.bottom = `${document.documentElement.scrollHeight-targetY}px`;
+  }
+  return newPosition;
+}
+
+
+export { formatTimeAgo, formatTimeAgoOrDate, stringToColour, calculateDropdownPosition };

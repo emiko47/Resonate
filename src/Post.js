@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import './cssfiles/post.css';
 import './cssfiles/commoncomponents.css'
 import { formatTimeAgoOrDate } from './Functions';
+import { User } from './CommonComponents';
 
 import { postsData, commentData } from './mockdata/Communities';
 
@@ -58,11 +59,10 @@ function CommentListComponent({comments}) {
 }
 
 function CommentComponent({comment}) {
-  console.log(comment);
   return (
     <div class="postComment">
       <div class="postCommentContent">
-        <span>{comment.username}</span>
+        <User username={comment.username} />
         <span>&nbsp;· {comment.text}</span>
         <button class="postReplyButton">
           Reply

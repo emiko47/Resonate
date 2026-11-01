@@ -2,8 +2,10 @@ import { useState, useRef, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import Select from 'react-select';
 import './cssfiles/commoncomponents.css';
-import { stringToColour } from './Functions';
+import { stringToColour, calculateDropdownPosition } from './Functions';
+
 import { genres } from './mockdata/Genres';
+import { defaultUser } from './mockdata/Users';
 
 
 function TagComponent({name, removableCallback = undefined}) {
@@ -52,19 +54,7 @@ function TagList({names, editableCallback = undefined, creatable = false}) {
     };
     // Create button to search and add a tag
     const addCallback = function(event) {
-      const newPosition = {};
-      const targetX = event.pageX;
-      if (targetX < document.documentElement.scrollWidth*0.75) {
-        newPosition.left = `${targetX}px`;
-      } else {
-        newPosition.right = `${document.documentElement.scrollWidth-targetX}px`;
-      }
-      const targetY = event.pageY;
-      if (targetY < document.documentElement.scrollHeight*0.75) {
-        newPosition.top = `${targetY}px`;
-      } else {
-        newPosition.bottom = `${document.documentElement.scrollHeight-targetY}px`;
-      }
+      const newPosition = calculateDropdownPosition(event);
       setDropdownPosition(newPosition);
       setDropdownIsVisible(true);
     };
@@ -108,5 +98,55 @@ function TagList({names, editableCallback = undefined, creatable = false}) {
   );
 }
 
+function User({username}) {
+  const [dropdownIsVisible, setDropdownIsVisible] = useState(false);
+  const [dropdownPosition, setDropdownPosition] = useState({
+    left: "0px",
+    top: "0px"
+  });
+  return (
+    <span class="userButton" onMouseEnter={(event) => {
+      const newPosition = calculateDropdownPosition(event);
+      setDropdownPosition(newPosition);
+      setDropdownIsVisible(true);
+    }}>
+      <img width="16" height="16" src="https://img.icons8.com/fluency-systems-regular/48/user-male-circle--v1.png" alt="user"/>
+      {username}
+      {dropdownIsVisible && ReactDOM.createPortal(
+        <div class="userDropdownOuter" style={dropdownPosition} onMouseLeave={(event) => {
+          setDropdownIsVisible(false);
+        }}>
+          <div class="userDropdownInner">
+            <div class="userDropdownHeaderRow">
+              <span>{defaultUser.displayname} · {defaultUser.location.shareText}</span>
+              <div class="userDropdownMatchOuter">
+                <div class="userDropdownMatchInner" />
+                <span class="userDropdownMatchLabel">80%</span>
+              </div>
+              <button class="iconButton">
+                <img class="iconButtonImg" width="18" height="18" src="https://img.icons8.com/material-rounded/24/plus-2-math--v1.png" alt="save user"/>
+              </button>
+            </div>
+            <p class="userDropdownBio">{defaultUser.bio}</p>
+            <div class="userDropdownListsRow">
+              <div class="userDropdownTagList">
+                <TagList names={defaultUser.genres} />
+              </div>
+              <div>
+                <span>You should check out:</span>
+                <ol>
+                  {defaultUser.topArists.map((artist) => (
+                    <li>{artist}</li>
+                  ))}
+                </ol>
+              </div>
+            </div>
+          </div>
+        </div>, document.body
+      )}
+    </span>
+  )
+}
 
-export { TagList }
+
+export { TagList, User }

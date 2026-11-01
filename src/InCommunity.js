@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import './cssfiles/incommunity.css';
 import './cssfiles/commoncomponents.css';
 import { formatTimeAgo } from './Functions';
+import { User } from './CommonComponents';
 
 import { postsData } from './mockdata/Communities';
 
@@ -62,7 +63,7 @@ function PostComponent({id}) {
       <div class="postPreviewSummaryCol">
         <div class="postPreviewTitleRow">
           <span class="postPreviewTitle">{postData.name}</span>
-          <span class="postPreviewUser">&nbsp;· {postData.username}</span>
+          <span class="postPreviewUser">&nbsp;· <User username={postData.username} /></span>
         </div>
         <p class="postPreviewBody">
           {postData.body.substring(0, 150)}
