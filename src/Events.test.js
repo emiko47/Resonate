@@ -69,6 +69,18 @@ test("closing creation preserves current form as a draft, then discard removes i
   fireEvent.click(screen.getByRole("button", { name: "Continue editing" }));
   expect(screen.getByLabelText(/Title/)).toHaveValue("My unfinished show");
   fireEvent.click(screen.getByRole("button", { name: "Discard" }));
+  const warning = screen.getByRole("alertdialog");
+  expect(warning).toHaveTextContent("Discard this event?");
+  fireEvent.click(
+    within(warning).getByRole("button", { name: "Keep editing" }),
+  );
+  expect(screen.getByLabelText(/Title/)).toHaveValue("My unfinished show");
+  fireEvent.click(screen.getByRole("button", { name: "Discard", exact: true }));
+  fireEvent.click(
+    within(screen.getByRole("alertdialog")).getByRole("button", {
+      name: "Discard event",
+    }),
+  );
   expect(screen.getByText(/No drafts yet/)).toBeInTheDocument();
 });
 

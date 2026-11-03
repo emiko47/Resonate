@@ -3,6 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import EventMap from "./EventMap";
 import EventDialog from "./EventDialog";
 import CreateEvent from "./CreateEvent";
+import Icon from "./Icon";
 import { stringToColour } from "./Functions";
 import {
   sampleEvents,
@@ -136,7 +137,10 @@ function Events() {
             <p>Discover</p>
             <h2 id="events-heading">Events</h2>
           </div>
-          <span className="event-muted">Calgary, AB</span>
+          <span className="event-muted">
+            <Icon name="pin" size={14} />
+            Calgary, AB
+          </span>
         </header>
         <div className="events-tabs" role="tablist" aria-label="Event lists">
           {["Discover", "Saved Events", "Drafts"].map((name) => (
@@ -147,6 +151,16 @@ function Events() {
               aria-selected={tab === name}
               onClick={() => setTab(name)}
             >
+              <Icon
+                name={
+                  name === "Discover"
+                    ? "explore"
+                    : name === "Saved Events"
+                      ? "bookmark"
+                      : "edit"
+                }
+                size={15}
+              />
               {name}
               {name === "Drafts" && drafts.length > 0
                 ? ` (${drafts.length})`
@@ -235,13 +249,14 @@ function Events() {
                       className="event-text-button"
                       onClick={() => open(event.id)}
                     >
-                      View details →
+                      View details <Icon name="arrow" size={13} />
                     </button>
                     <div className="event-actions">
                       <button
                         aria-label={`Share ${event.title}`}
                         onClick={() => share(event)}
                       >
+                        <Icon name="share" size={14} />
                         Share
                       </button>
                       <button
@@ -249,6 +264,7 @@ function Events() {
                         aria-pressed={saved.includes(event.id)}
                         onClick={() => toggle(setSaved, event.id)}
                       >
+                        <Icon name="bookmark" size={14} />
                         {saved.includes(event.id) ? "Saved" : "Save"}
                       </button>
                     </div>
@@ -280,10 +296,11 @@ function Events() {
               className="create-event-button event-primary"
               onClick={() => setEditing({})}
             >
+              <Icon name="plus" size={17} />
               Create Event
             </button>
           )}
-          <span className="event-muted">Artist account · prototype</span>
+          <span className="event-muted">Share a local performance</span>
         </footer>
         <p className="event-notice" role="status">
           {notice}
@@ -406,15 +423,20 @@ function Events() {
                 aria-pressed={going.includes(selected.id)}
                 onClick={() => toggle(setGoing, selected.id)}
               >
+                <Icon name="check" size={16} />
                 {going.includes(selected.id) ? "Going ✓" : "RSVP"}
               </button>
               <button
                 aria-pressed={saved.includes(selected.id)}
                 onClick={() => toggle(setSaved, selected.id)}
               >
+                <Icon name="bookmark" size={15} />
                 {saved.includes(selected.id) ? "Saved" : "Save Event"}
               </button>
-              <button onClick={() => share(selected)}>Share</button>
+              <button onClick={() => share(selected)}>
+                <Icon name="share" size={15} />
+                Share
+              </button>
               {selected.ticketUrl && (
                 <a href={selected.ticketUrl} target="_blank" rel="noreferrer">
                   External Ticket Link ↗

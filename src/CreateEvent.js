@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import EventMap from "./EventMap";
+import DiscardButton from "./DiscardButton";
+import Icon from "./Icon";
 import { emptyEvent, eventGenres } from "./mockdata/Events";
 import { stringToColour } from "./Functions";
 
@@ -180,14 +182,21 @@ export default function CreateEvent({
       )}
       <footer className="event-actions">
         <button className="event-primary" type="submit">
+          <Icon name="plus" size={17} />
           Post Event
         </button>
         <button type="button" onClick={() => onSave(form)}>
+          <Icon name="save" size={17} />
           Save for Later
         </button>
-        <button className="event-discard" type="button" onClick={onDiscard}>
-          Discard
-        </button>
+        <DiscardButton
+          className="event-discard"
+          dirty={Object.values(form).some((value) =>
+            Array.isArray(value) ? value.length > 0 : Boolean(value),
+          )}
+          subject="event"
+          onDiscard={onDiscard}
+        />
       </footer>
     </form>
   );

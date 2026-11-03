@@ -28,11 +28,8 @@ function stringToColour(str) {
     hash = str.charCodeAt(i) + ((hash << 5) - hash);
   }
 
-  const hue = ('00'+(hash & 0xFF).toString(10)).slice(-3);
-  const saturation = 10 <= hue && hue <= 340 ? 80 : 60;
-  const lightness = 230 <= hue && hue <= 270 ? 70 : 55;
-  const colour = `hsl(${hue} ${saturation} ${lightness})`;
-  // console.log(colour);
+  const colours = ['#FFE0C7', '#EEE8DA', '#F4EEDC', '#E2DFD5', '#FFD0AD'];
+  const colour = colours[Math.abs(hash) % colours.length];
   return colour;
 }
 

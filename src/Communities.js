@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './cssfiles/communities.css';
+import Icon from './Icon';
 import { TagList } from './CommonComponents';
 import { formatTimeAgo } from './Functions';
 
@@ -46,7 +47,7 @@ function Communities() {
         </div>
         <button id="createCommunityButton" type="button" onClick={() => {
           navigate("../createcommunity");
-        }}>Create Community</button>
+        }}><Icon name="plus" size={17}/>Create Community</button>
       </div>
 
       {/* Filter pane */}

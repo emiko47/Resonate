@@ -15,6 +15,7 @@ import MyCollections from './MyCollections';
 import Chat from './Chat';
 import Search from './Search';
 import Profile from './Profile';
+import './cssfiles/theme.css';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -43,4 +44,3 @@ root.render(
     </BrowserRouter>
   </React.StrictMode>
 );
-
