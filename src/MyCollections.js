@@ -105,9 +105,4 @@ function MyCollections() {
 }
 
 
-function CommunityComponent({id}) {
-  return <span>test</span>;
-}
-
-
 export default MyCollections;
