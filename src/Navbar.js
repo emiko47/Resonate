@@ -18,7 +18,7 @@ const navigation = [
     to: "/communities",
     label: "Communities",
     icon: "users",
-    other: ["/createcommunity", "/createpost"],
+    other: ["/createcommunity", "/createpost", "/postdrafts"],
   },
   { to: "/events", label: "Events", icon: "calendar" },
   { to: "/mycollections", label: "My Collections", icon: "bookmark" },

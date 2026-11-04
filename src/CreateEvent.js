@@ -180,20 +180,19 @@ export default function CreateEvent({
           {error}
         </p>
       )}
-      <footer className="event-actions">
-        <button className="event-primary" type="submit">
-          <Icon name="plus" size={17} />
-          Post Event
-        </button>
-        <button type="button" onClick={() => onSave(form)}>
-          <Icon name="save" size={17} />
-          Save for Later
-        </button>
+      <footer className="event-actions creation-actions">
+        <div className="creation-primary-actions">
+          <button className="event-primary" type="submit">
+            <Icon name="plus" size={17} />
+            Post Event
+          </button>
+          <button type="button" onClick={() => onSave(form)}>
+            <Icon name="save" size={17} />
+            Save for Later
+          </button>
+        </div>
         <DiscardButton
-          className="event-discard"
-          dirty={Object.values(form).some((value) =>
-            Array.isArray(value) ? value.length > 0 : Boolean(value),
-          )}
+          className="event-discard discard-action"
           subject="event"
           onDiscard={onDiscard}
         />

@@ -12,6 +12,6 @@ The visual refresh follows the supplied Resonate Music App Styleboard.
 
 The sidebar is 208px wide, or 74px as an icon rail (64px on small screens). Its collapsed state is remembered in browser storage. On small screens, expanding it overlays the content rather than squeezing the page. Every icon-only navigation item has an accessible name and tooltip. The `/` shortcut opens Search when focus is outside a text field.
 
-`DiscardButton` is shared by event and post creation. Edited forms require an explicit confirmation. Keep editing is focused first; Escape cancels the warning and preserves the form. An empty form can be discarded immediately. Closing event creation still preserves a draft, matching the existing event behaviour.
+`DiscardButton` is shared by event and post creation. Edited forms require an explicit confirmation. Keep editing is focused first; Escape cancels the warning and preserves the form. Event and post Discard actions require confirmation even when the form is empty. Closing event creation still preserves a draft, matching the existing event behaviour.
 
 SVG artwork is decorative in the interface; the brand link has a text alternative. Orange action buttons use dark text for readable contrast. Reduced-motion preferences disable layout transitions.

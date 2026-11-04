@@ -9,6 +9,7 @@ import Communities from "./Communities";
 import CreateCommunity from "./CreateCommunity";
 import Community from "./InCommunity";
 import CreatePost from "./CreatePost";
+import PostDrafts from "./PostDrafts";
 import Post from "./Post";
 import Events from "./Events";
 import MyCollections from "./MyCollections";
@@ -18,6 +19,7 @@ import Profile from "./Profile";
 import AccountAccess from "./AccountAccess";
 import { DemoAuthProvider } from "./DemoAuth";
 import "./cssfiles/theme.css";
+import "./cssfiles/creationflows.css";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -39,6 +41,7 @@ root.render(
             </Route>
             <Route path="createcommunity" element={<CreateCommunity />} />
             <Route path="createpost" element={<CreatePost />} />
+            <Route path="postdrafts" element={<PostDrafts />} />
             <Route path="events" element={<Events />} />
             <Route path="mycollections" element={<MyCollections />} />
             <Route path="chat" element={<Chat />} />

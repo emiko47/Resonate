@@ -121,3 +121,25 @@ test("publishing validates the location and adds a persistent event with RSVP", 
     JSON.parse(localStorage.getItem("resonate.events.v1.going")),
   ).toHaveLength(1);
 });
+
+test("an empty event requires explicit discard confirmation", () => {
+  setup();
+  fireEvent.click(screen.getByRole("button", { name: "Create Event" }));
+  expect(
+    screen.getByRole("button", { name: "Back to events" }),
+  ).toBeInTheDocument();
+  fireEvent.click(screen.getByRole("button", { name: "Discard", exact: true }));
+  expect(screen.getByRole("alertdialog")).toHaveTextContent(
+    "Discard this event?",
+  );
+  fireEvent.click(screen.getByRole("button", { name: "Keep editing" }));
+  expect(screen.getByLabelText(/Title/)).toHaveValue("");
+});
+
+test("Back leaves an empty event without creating a blank draft", () => {
+  setup();
+  fireEvent.click(screen.getByRole("button", { name: "Create Event" }));
+  fireEvent.click(screen.getByRole("button", { name: "Back to events" }));
+  fireEvent.click(screen.getByRole("tab", { name: /Drafts/ }));
+  expect(screen.getByText(/No drafts yet/)).toBeInTheDocument();
+});

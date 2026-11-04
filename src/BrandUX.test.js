@@ -59,7 +59,7 @@ test("discarding a post requires confirmation and Keep editing preserves input",
     <MemoryRouter initialEntries={["/createpost"]}>
       <Routes>
         <Route path="createpost" element={<CreatePost />} />
-        <Route path="communities/example" element={<h1>Community</h1>} />
+        <Route path="communities/calgary-rap" element={<h1>Community</h1>} />
       </Routes>
     </MemoryRouter>,
   );

@@ -6,6 +6,8 @@ export default function DiscardButton({
   onDiscard,
   subject = "changes",
   className = "",
+  label = "Discard",
+  icon = "trash",
 }) {
   const [open, setOpen] = useState(false);
   const dialog = useRef(null);
@@ -30,8 +32,8 @@ export default function DiscardButton({
         className={className}
         onClick={() => (dirty ? setOpen(true) : onDiscard())}
       >
-        <Icon name="trash" size={17} />
-        Discard
+        <Icon name={icon} size={17} />
+        {label}
       </button>
       {open &&
         createPortal(
@@ -52,7 +54,8 @@ export default function DiscardButton({
             </div>
             <h2 id={titleId}>Discard this {subject}?</h2>
             <p id={bodyId}>
-              Your unsaved work will be lost. This cannot be undone.
+              Your current {subject} details will be lost. This cannot be
+              undone.
             </p>
             <div className="discard-dialog-actions">
               <button autoFocus type="button" onClick={() => setOpen(false)}>

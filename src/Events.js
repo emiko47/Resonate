@@ -129,6 +129,19 @@ function Events() {
     setNotice("Your event has been posted in this browser.");
     open(id);
   }
+  function closeEditor() {
+    const snapshot = draftSnapshot.current;
+    const hasContent = Object.values(snapshot).some((value) =>
+      Array.isArray(value) ? value.length > 0 : Boolean(value),
+    );
+    if (hasContent || editing.id) {
+      setDrafts((previous) => [
+        ...previous.filter((draft) => draft.id !== editing.id),
+        { ...snapshot, id: editing.id || `draft-${Date.now()}` },
+      ]);
+    }
+    setEditing(null);
+  }
   return (
     <div className="events-page">
       <section className="event-list-panel" aria-labelledby="events-heading">
@@ -325,16 +338,7 @@ function Events() {
       {editing && (
         <EventDialog
           title={editing.id ? "Continue your event" : "Create Event"}
-          onClose={() => {
-            setDrafts((previous) => [
-              ...previous.filter((d) => d.id !== editing.id),
-              {
-                ...draftSnapshot.current,
-                id: editing.id || `draft-${Date.now()}`,
-              },
-            ]);
-            setEditing(null);
-          }}
+          onClose={closeEditor}
         >
           <CreateEvent
             onDraftChange={(form) => {

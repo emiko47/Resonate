@@ -1,3 +1,4 @@
+import BackButton from "./BackButton";
 import { useState } from "react";
 import "./cssfiles/profile.css";
 import "./cssfiles/commoncomponents.css"
@@ -31,6 +32,7 @@ function Profile() {
 
   return (
     <div id="profileRoot">
+      <BackButton to="/" label="Back to home" className="grid-screen-back"/>
       <div id="profileLeft">
         {/* Profile picture */}
         <div id="profilePictureCol">
