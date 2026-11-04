@@ -1,5 +1,7 @@
 import React from "react";
 const paths = {
+  minus: "M5 12h14",
+  reply: "M9 5 3 11l6 6M3 11h10a7 7 0 0 1 7 7v3",
   home: "m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1Z",
   explore: "M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20Zm4-16-3 7-7 3 3-7Z",
   users:

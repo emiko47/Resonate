@@ -1,86 +1,436 @@
 #postRoot {
-    box-sizing: border-box;
-    display: flex;
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  height: 100%;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 30px 36px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  scroll-behavior: smooth;
+}
+.post-back {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--muted);
+  text-decoration: none;
+}
+.post-article {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 28px 30px;
+  flex-shrink: 0;
+}
+.post-overline {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.post-community-tag {
+  border-radius: 18px;
+  background: var(--orange-soft);
+  color: #a63c00;
+  font-size: 10px;
+  padding: 5px 10px;
+}
+.post-article h1 {
+  font-size: 26px;
+  font-weight: 600;
+  letter-spacing: -0.8px;
+  line-height: 1.4;
+  margin: 20px 0 16px;
+}
+.post-author-line {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 11px;
+  color: var(--muted);
+}
+.post-author-line strong {
+  color: var(--ink);
+  font-weight: 500;
+}
+.post-article-body {
+  margin: 22px 0;
+  font-size: 13px;
+  line-height: 1.95;
+  color: #514e47;
+  max-height: 330px;
+  overflow-y: auto;
+  padding-right: 8px;
+}
+.post-article-body p {
+  margin: 0 0 16px;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.post-article-footer {
+  border-top: 1px solid var(--line);
+  padding-top: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.post-article-footer > span {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 11px;
+  color: var(--muted);
+}
+.post-discussions {
+  flex-shrink: 0;
+}
+.discussion-section-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  align-items: center;
+  margin-bottom: 18px;
+}
+.discussion-section-header h2 {
+  font-size: 20px;
+  letter-spacing: -0.5px;
+  margin: 0 0 8px;
+}
+.discussion-section-header h2 span {
+  display: inline-flex;
+  font-size: 11px;
+  color: var(--muted);
+  background: #eae5d9;
+  border-radius: 16px;
+  padding: 3px 8px;
+  vertical-align: middle;
+  margin-left: 5px;
+}
+.discussion-section-header p {
+  color: var(--muted);
+  font-size: 10px;
+  line-height: 1.8;
+  margin: 0;
+  max-width: 420px;
+}
+.discussion-tools {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  flex-shrink: 0;
+}
+.discussion-tools label {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  font-size: 9px;
+  color: var(--muted);
+}
+.discussion-tools select {
+  font-size: 10px;
+  padding: 8px 10px;
+}
+.thread-secondary {
+  border: 1px solid var(--line);
+  background: var(--paper);
+  color: var(--muted);
+  padding: 9px 12px;
+  border-radius: 22px;
+  font-size: 10px;
+}
+.thread-submit {
+  background: var(--orange);
+  border: 1px solid var(--orange);
+  color: var(--ink);
+  padding: 10px 16px;
+  border-radius: 25px;
+  font-size: 11px;
+  font-weight: 500;
+}
+.thread-submit:hover {
+  background: #ed6000;
+}
+.thread-list,
+.thread-replies {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.thread-list {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.thread-replies {
+  margin: 8px 0 0 18px;
+  padding-left: 20px;
+  border-left: 2px solid #ddd6c7;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.thread-replies-deep {
+  margin-left: 0;
+  padding-left: 10px;
+  border-color: #eddfd0;
+}
+.discussion-card {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 15px;
+  padding: 17px 19px;
+  scroll-margin: 20px;
+}
+.discussion-card:target {
+  border-color: var(--orange);
+  box-shadow: 0 0 0 3px #ff6a0015;
+}
+.discussion-heading {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.discussion-avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 31px;
+  height: 31px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  font-size: 12px;
+  color: #a4470d;
+  background: var(--orange-soft);
+  font-weight: 500;
+}
+.discussion-author {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+.discussion-author strong {
+  font-size: 11px;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+.discussion-author > span {
+  font-size: 9px;
+  line-height: 1.6;
+  color: var(--muted);
+}
+.discussion-author a {
+  color: #aa4a0b;
+  text-decoration: none;
+}
+.discussion-author a:hover {
+  text-decoration: underline;
+}
+.discussion-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 29px;
+  height: 29px;
+  padding: 0;
+  border: 1px solid var(--line);
+  background: transparent;
+  border-radius: 8px;
+  color: var(--muted);
+  margin-left: auto;
+  flex-shrink: 0;
+}
+.discussion-toggle:hover {
+  background: var(--orange-soft);
+  border-color: #ffbd8d;
+}
+.discussion-text {
+  font-size: 12px;
+  line-height: 1.9;
+  color: #4c4942;
+  margin: 14px 0 12px;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.thread-reply-button {
+  background: none;
+  border: 0;
+  color: var(--muted);
+  padding: 3px 0;
+  font-size: 10px;
+}
+.thread-reply-button:hover {
+  color: #a63c00;
+  background: transparent;
+}
+.reply-count {
+  font-size: 9px;
+  padding-left: 8px;
+  border-left: 1px solid var(--line);
+  margin-left: 5px;
+}
+.discussion-summary,
+.discussion-hidden-note {
+  font-size: 10px;
+  color: var(--muted);
+  line-height: 1.8;
+  margin: 10px 0 0 41px;
+}
+.discussion-collapsed {
+  background: #f3f0e7;
+}
+.discussion-hidden-note {
+  margin: 14px 0;
+  background: var(--ivory);
+  padding: 18px;
+  border-radius: 12px;
+}
+.discussion-storage-note {
+  font-size: 10px;
+  color: var(--muted);
+  margin: 0 0 15px;
+}
+.thread-composer {
+  border: 1px solid #f5c8a9;
+  background: #fffaf2;
+  border-radius: 13px;
+  padding: 15px;
+  margin: 16px 0;
+}
+.thread-composer label {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.thread-composer label > span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+  color: #9e450c;
+}
+.thread-composer textarea {
+  width: 100%;
+  font-size: 12px;
+  min-height: 85px;
+  resize: vertical;
+  border-color: var(--line);
+  background: var(--paper);
+}
+.thread-composer footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 10px;
+}
+.thread-composer footer > span {
+  font-size: 9px;
+  color: var(--muted);
+}
+.thread-composer footer > div {
+  display: flex;
+  gap: 8px;
+}
+.thread-notice {
+  font-size: 11px;
+  color: var(--muted);
+  line-height: 1.8;
+}
+.thread-error {
+  font-size: 11px;
+  color: #a63422;
+}
+@media (max-width: 800px) {
+  .discussion-section-header {
     flex-direction: column;
-    gap: 14px;
+    align-items: flex-start;
+  }
+  .discussion-tools {
     width: 100%;
-    height: 100%;
-    min-height: 0;
-    padding: 28px;
-    overflow-y: auto;
-}
-
-#postBackButton {
-    align-self: flex-start;
-    border: 1px solid #111827;
-    border-radius: 7px;
-    background-color: #111827;
-    color: #ffffff;
-    cursor: pointer;
-    padding: 10px 16px;
-}
-
-#postInfoRow {
-    display: flex;
-    flex-direction: row;
     justify-content: space-between;
+  }
 }
-
-#postInfoRow > p {
-    font-size: 1.15rem;
-    font-weight: 600;
-    margin-top: 0;
-    margin-bottom: 0;
-}
-
-#postInfoAndSave {
-    display: flex;
-    flex-direction: row;
-}
-
-#postInfoCol {
-    display: flex;
-    flex-direction: column;
-}
-
-#postText {
-    overflow-y: auto;
-    max-height: 50%;
-}
-
-#postText > p{
-    margin-top: 0;
-    margin-bottom: 0;
-}
-
-#postComments {
-    overflow-y: auto;
-}
-
-.postCommentList {
+@media (max-width: 700px) {
+  #postRoot {
+    padding: 22px 16px;
+    gap: 20px;
+  }
+  .post-article {
+    padding: 20px 18px;
+  }
+  .post-article h1 {
+    font-size: 22px;
+  }
+  .post-article-body {
+    font-size: 12px;
+    max-height: 260px;
+  }
+  .post-article-footer {
+    flex-wrap: wrap;
+  }
+  .post-overline .eyebrow {
+    font-size: 8px;
+  }
+  .discussion-card {
+    padding: 13px 12px;
+  }
+  .thread-replies {
     margin-left: 8px;
-    align-self: flex-start;
+    padding-left: 10px;
+  }
+  .thread-replies-deep {
+    margin-left: 0;
+    padding-left: 5px;
+  }
+  .discussion-text {
+    font-size: 11px;
+  }
+  .discussion-author > span {
+    font-size: 8px;
+  }
+  .thread-composer {
+    padding: 10px;
+  }
+  .thread-composer footer {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .thread-composer footer > div {
+    align-self: flex-end;
+  }
+  .thread-submit {
+    font-size: 10px;
+    padding: 9px 12px;
+  }
+  .discussion-author strong {
+    font-size: 10px;
+  }
 }
-
-.postCommentContent {
-    margin-top: 4px;
-    border-bottom: 1px solid #6b7280;
-    border-left: 1px solid #6b7280;
-    align-self: flex-start;
-    flex-grow: 0;
-    width: fit-content;
+.post-discussions [hidden] {
+  display: none !important;
 }
-
-.postReplyButton {
-    font-size: 0.85rem;
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-    color: #6b7280;
+.post-article-body {
+  max-height: none;
+  overflow: visible;
 }
-
-#postReplyRow {
-    display: flex;
-    flex-direction: row;
-    gap: 4px;
+.post-article-body.is-preview {
+  max-height: 150px;
+  overflow: hidden;
+  mask-image: linear-gradient(to bottom, black 65%, transparent);
+}
+.post-body-toggle {
+  border: 0;
+  background: transparent;
+  color: #a63c00;
+  font-size: 10px;
+  padding: 0;
+  margin: 0 0 18px;
 }

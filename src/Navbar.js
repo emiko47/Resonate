@@ -7,6 +7,7 @@ import {
 } from "react-router-dom";
 import { useState, useRef, useEffect } from "react";
 import Icon from "./Icon";
+import { useDemoAuth } from "./DemoAuth";
 import "./cssfiles/navbar.css";
 import { notificationsData } from "./mockdata/Notifications";
 
@@ -24,6 +25,7 @@ const navigation = [
 ];
 function Navbar() {
   const location = useLocation();
+  const { session, endDemoSession } = useDemoAuth();
   const navigate = useNavigate();
   useEffect(() => {
     function searchShortcut(event) {
@@ -165,6 +167,28 @@ function Navbar() {
           >
             <Icon name="user" size={20} />
           </NavLink>
+          {session ? (
+            <>
+              <span className="demo-session-badge">
+                Demo: {session.displayname}
+              </span>
+              <button
+                type="button"
+                className="demo-signout"
+                onClick={endDemoSession}
+              >
+                Log out
+              </button>
+            </>
+          ) : (
+            <Link
+              className="demo-signin-link"
+              to={`/login?next=${encodeURIComponent(location.pathname + location.search)}`}
+            >
+              <Icon name="user" size={14} />
+              Log in
+            </Link>
+          )}
         </nav>
       </header>
       <div id="sideBar_and_routeContainer">
