@@ -1,0 +1,561 @@
+.exploreMusic {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    min-height: 100%;
+    position: relative;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+.exploreMusic *,
+.modalOverlay * {
+    box-sizing: border-box;
+}
+
+
+/* Top navigation buttons */
+
+.topButtons {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    min-height: 60px;
+    justify-content: space-around;
+    align-items: center;
+    gap: 12px;
+    padding: 5px 10px;
+}
+
+.topButton {
+    border: 1px solid black;
+    border-radius: 4px;
+    width: 40%;
+    min-height: 40px;
+    cursor: pointer;
+    background: white;
+    font-size: 14px;
+    transition: background 0.2s ease;
+}
+
+.topButton:hover {
+    background: #eeeeee;
+}
+
+
+/* Main song grid */
+
+.tileContainer {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+    align-content: start;
+    width: 100%;
+    padding: 16px;
+}
+
+
+/* Individual song tile */
+
+.tile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+
+    width: 100%;
+    min-width: 0;
+    min-height: 190px;
+    height: auto;
+
+    padding: 10px;
+    border: 1px solid #d6d6d6;
+    border-radius: 8px;
+    background: white;
+
+    overflow: hidden;
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.tile:hover {
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+
+/* Streaming platform icons */
+
+.streamingPlatforms {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 8px;
+
+    width: 100%;
+    min-height: 18px;
+    flex-shrink: 0;
+}
+
+.streamingPlatforms img {
+    width: 14px;
+    height: 14px;
+    object-fit: contain;
+}
+
+
+/* Album art */
+
+.albumArt {
+    display: block;
+    width: 48px;
+    height: 48px;
+    margin: 6px 0;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+
+/* Song title and artist */
+
+.songInfo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+    min-width: 0;
+    text-align: center;
+}
+
+.songTitle {
+    width: 100%;
+    margin: 3px 0;
+
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 1.3;
+
+    overflow-wrap: anywhere;
+}
+
+.artistName {
+    width: 100%;
+    margin: 2px 0 8px;
+
+    font-size: 12px;
+    color: gray;
+    line-height: 1.3;
+
+    overflow-wrap: anywhere;
+}
+
+
+/* Action buttons */
+
+.helpButtons {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    width: 100%;
+    min-height: 28px;
+    margin-top: auto;
+    padding-top: 6px;
+    border-top: 1px solid #eeeeee;
+}
+
+.helpButtonLeft {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 25%;
+}
+
+.helpButtonRight {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 12px;
+
+    width: 75%;
+}
+
+.iconButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 24px;
+    height: 24px;
+    padding: 4px;
+
+    border: none;
+    border-radius: 4px;
+    background: transparent;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.iconButton:hover {
+    background: #eeeeee;
+}
+
+.iconButton img {
+    display: block;
+    width: 15px;
+    height: 15px;
+    object-fit: contain;
+}
+
+
+/* Modal backdrop */
+
+.modalOverlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.55);
+}
+
+
+/* Modal before searching */
+
+.similarModal {
+    display: flex;
+    flex-direction: column;
+
+    width: 100%;
+    max-width: 520px;
+    max-height: 90vh;
+
+    padding: 24px;
+    border-radius: 12px;
+    background: white;
+
+    overflow-y: auto;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
+
+    animation: modalAppear 0.2s ease-out;
+}
+
+
+/* Expanded modal after clicking Find */
+
+.similarModalExpanded {
+    width: 96vw;
+    max-width: 1200px;
+    max-height: 92vh;
+}
+
+
+/* Modal header */
+
+.modalHeader {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.modalHeader h2 {
+    margin: 0 0 8px;
+    font-size: 22px;
+}
+
+.modalSubtitle {
+    margin: 0;
+    color: #666666;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.closeModalButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+
+    border: none;
+    border-radius: 50%;
+    background: #eeeeee;
+
+    font-size: 25px;
+    cursor: pointer;
+}
+
+.closeModalButton:hover {
+    background: #dddddd;
+}
+
+
+/* Search form */
+
+.searchLabel {
+    display: block;
+    margin: 16px 0 8px;
+
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.similarSearchInput {
+    display: block;
+    width: 100%;
+    min-height: 42px;
+
+    padding: 10px 12px;
+    border: 1px solid #cccccc;
+    border-radius: 6px;
+
+    font-size: 14px;
+    outline: none;
+}
+
+.similarSearchInput:focus {
+    border-color: #555555;
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.08);
+}
+
+
+/* Search category checkboxes */
+
+.categoryOptions {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+
+    margin-top: 12px;
+}
+
+.categoryOption {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+
+    min-width: 0;
+    padding: 10px;
+
+    border: 1px solid #dddddd;
+    border-radius: 6px;
+
+    font-size: 13px;
+    cursor: pointer;
+    overflow-wrap: anywhere;
+}
+
+.categoryOption:hover {
+    background: #f7f7f7;
+}
+
+.categoryOption input {
+    flex-shrink: 0;
+    cursor: pointer;
+}
+
+
+/* Find button */
+
+.findButton {
+    display: block;
+    width: 100%;
+    min-height: 42px;
+
+    margin-top: 20px;
+    padding: 10px;
+
+    border: none;
+    border-radius: 6px;
+
+    background: #222222;
+    color: white;
+
+    font-size: 15px;
+    font-weight: bold;
+
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.findButton:hover {
+    background: #444444;
+}
+
+
+/* Results section */
+
+.similarResults {
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid #dddddd;
+}
+
+.resultsHeader {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.resultsHeader h3 {
+    margin: 0;
+    font-size: 19px;
+}
+
+.resultsHeader span {
+    color: #777777;
+    font-size: 13px;
+}
+
+.resultsDescription {
+    margin: 8px 0 16px;
+    color: #666666;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+
+/* Song grid inside the modal */
+
+.modalTileContainer {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 14px;
+
+    width: 100%;
+    padding: 4px 0 8px;
+}
+
+.modalTileContainer .tile {
+    min-height: 190px;
+}
+
+
+/* Share toast */
+
+.shareToast {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    z-index: 2000;
+
+    max-width: calc(100vw - 32px);
+    padding: 14px 20px;
+
+    border-radius: 8px;
+    background: #222222;
+    color: white;
+
+    font-size: 14px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+
+    animation: toastAppear 0.25s ease-out;
+}
+
+
+/* Animations */
+
+@keyframes modalAppear {
+    from {
+        opacity: 0;
+        transform: scale(0.97);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes toastAppear {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+/* Tablet layout */
+
+@media (max-width: 900px) {
+    .tileContainer {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .modalTileContainer {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+
+/* Mobile layout */
+
+@media (max-width: 550px) {
+    .tileContainer {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+        padding: 10px;
+    }
+
+    .tile {
+        padding: 8px;
+    }
+
+    .songTitle {
+        font-size: 13px;
+    }
+
+    .artistName {
+        font-size: 11px;
+    }
+
+    .helpButtonRight {
+        gap: 4px;
+    }
+
+    .modalOverlay {
+        padding: 10px;
+    }
+
+    .similarModal,
+    .similarModalExpanded {
+        width: 100%;
+        max-width: none;
+        max-height: 95vh;
+        padding: 16px;
+    }
+
+    .categoryOptions {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .modalTileContainer {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+    }
+
+    .modalHeader h2 {
+        font-size: 19px;
+    }
+}
