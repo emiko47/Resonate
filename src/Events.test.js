@@ -1,5 +1,5 @@
 import React from "react";
-import { render, screen, fireEvent, within } from "@testing-library/react";
+import { render, screen, fireEvent, within, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
 global.TextEncoder = require("util").TextEncoder;
 // CRA's Jest 27 resolver does not understand React Router 7's /dom export.
@@ -84,7 +84,8 @@ test("closing creation preserves current form as a draft, then discard removes i
   expect(screen.getByText(/No drafts yet/)).toBeInTheDocument();
 });
 
-test("publishing validates the location and adds a persistent event with RSVP", () => {
+test("publishing validates the location and adds a persistent event with RSVP", async () => {
+  global.fetch = jest.fn().mockResolvedValue({ ok: true, json: async () => ({ display_name: "123 Test Street" }) });
   const view = setup();
   fireEvent.click(screen.getByRole("button", { name: "Create Event" }));
   for (const [label, value] of [
@@ -103,6 +104,7 @@ test("publishing validates the location and adds a persistent event with RSVP", 
     "Choose the event location",
   );
   fireEvent.click(screen.getByRole("button", { name: "Pick venue location" }));
+  await waitFor(() => expect(screen.getByLabelText("Address")).toHaveValue("123 Test Street"));
   fireEvent.click(screen.getByRole("button", { name: "Post Event" }));
   const dialog = screen.getByRole("dialog");
   expect(
@@ -120,6 +122,22 @@ test("publishing validates the location and adds a persistent event with RSVP", 
   expect(
     JSON.parse(localStorage.getItem("resonate.events.v1.going")),
   ).toHaveLength(1);
+});
+
+test("address lookup places a pin and map selection fills the address", async () => {
+  global.fetch = jest.fn((url) => Promise.resolve({
+    ok: true,
+    json: async () => url.includes("/search?")
+      ? [{ lat: "51.05", lon: "-114.07" }]
+      : { display_name: "456 Map Street, Calgary" },
+  }));
+  setup();
+  fireEvent.click(screen.getByRole("button", { name: "Create Event" }));
+  fireEvent.change(screen.getByLabelText("Address"), { target: { value: "123 Test Street, Calgary" } });
+  await waitFor(() => expect(screen.getByText(/Pin set: 51.0500, -114.0700/)).toBeInTheDocument(), { timeout: 3000 });
+  fireEvent.click(screen.getByRole("button", { name: "Pick venue location" }));
+  await waitFor(() => expect(screen.getByLabelText("Address")).toHaveValue("456 Map Street, Calgary"));
+  expect(screen.getByText(/Pin set: 51.0400, -114.0600/)).toBeInTheDocument();
 });
 
 test("an empty event requires explicit discard confirmation", () => {

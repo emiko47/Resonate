@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import EventMap from "./EventMap";
 import DiscardButton from "./DiscardButton";
 import Icon from "./Icon";
@@ -14,6 +14,65 @@ export default function CreateEvent({
 }) {
   const [form, setForm] = useState(initial || emptyEvent);
   const [error, setError] = useState("");
+  const [locationStatus, setLocationStatus] = useState("");
+  const lookup = useRef(0);
+  const timer = useRef(null);
+  const controller = useRef(null);
+  useEffect(() => () => {
+    clearTimeout(timer.current);
+    controller.current?.abort();
+    lookup.current += 1;
+  }, []);
+  function beginLookup() {
+    clearTimeout(timer.current);
+    controller.current?.abort();
+    controller.current = new AbortController();
+    return { id: ++lookup.current, signal: controller.current.signal };
+  }
+  function changeAddress(address) {
+    const request = beginLookup();
+    setForm((previous) => ({ ...previous, address, coordinates: null }));
+    setLocationStatus("");
+    if (address.trim().length < 3) return;
+    setLocationStatus("Looking up address…");
+    timer.current = setTimeout(async () => {
+      try {
+        const params = new URLSearchParams({ q: address, format: "jsonv2", limit: "1" });
+        const response = await fetch(`https://nominatim.openstreetmap.org/search?${params}`, { signal: request.signal });
+        if (!response.ok) throw new Error("Address lookup failed");
+        const results = await response.json();
+        if (request.id !== lookup.current) return;
+        const point = results[0] && [Number(results[0].lat), Number(results[0].lon)];
+        if (!point || !point.every(Number.isFinite)) {
+          setLocationStatus("Address not found. Try a more complete address or place a pin.");
+          return;
+        }
+        setForm((previous) => ({ ...previous, coordinates: point }));
+        setLocationStatus("Address located on the map.");
+      } catch (err) {
+        if (request.id === lookup.current && err.name !== "AbortError")
+          setLocationStatus("Could not look up this address. Try again or place a pin.");
+      }
+    }, 1000);
+  }
+  async function pickLocation(point) {
+    const request = beginLookup();
+    setForm((previous) => ({ ...previous, coordinates: point, address: "" }));
+    setLocationStatus("Looking up pin address…");
+    try {
+      const params = new URLSearchParams({ lat: point[0], lon: point[1], format: "jsonv2" });
+      const response = await fetch(`https://nominatim.openstreetmap.org/reverse?${params}`, { signal: request.signal });
+      if (!response.ok) throw new Error("Address lookup failed");
+      const result = await response.json();
+      if (request.id !== lookup.current) return;
+      if (!result.display_name) throw new Error("Address not found");
+      setForm((previous) => ({ ...previous, address: result.display_name.slice(0, 200) }));
+      setLocationStatus("Address filled from the map pin.");
+    } catch (err) {
+      if (request.id === lookup.current && err.name !== "AbortError")
+        setLocationStatus("Could not find an address for this pin. Enter one manually.");
+    }
+  }
   useEffect(() => {
     onDraftChange(form);
   }, [form, onDraftChange]);
@@ -114,7 +173,7 @@ export default function CreateEvent({
               required
               maxLength={200}
               value={form.address}
-              onChange={(e) => update("address", e.target.value)}
+              onChange={(e) => changeAddress(e.target.value)}
               placeholder="Street address, Calgary"
             />
           </label>
@@ -145,7 +204,7 @@ export default function CreateEvent({
           <div className="event-picker-map">
             <EventMap
               coordinates={form.coordinates}
-              onPick={(point) => update("coordinates", point)}
+              onPick={pickLocation}
             />
           </div>
           <span className="event-muted">
@@ -153,6 +212,7 @@ export default function CreateEvent({
               ? `Pin set: ${form.coordinates.map((n) => n.toFixed(4)).join(", ")}`
               : "Click to place a pin at your venue."}
           </span>
+          <span className="event-muted" role="status">{locationStatus}</span>
         </div>
       </div>
       <label>
