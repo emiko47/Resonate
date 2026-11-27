@@ -65,7 +65,11 @@ test("saving creation preserves the form as a draft, then discard removes it", (
     target: { value: "My unfinished show" },
   });
   fireEvent.click(screen.getByRole("button", { name: "Save for Later" }));
-  fireEvent.click(screen.getByRole("tab", { name: /Drafts/ }));
+  const savedDialog = screen.getByRole("dialog", { name: "Event draft saved" });
+  expect(savedDialog).toHaveTextContent("not published yet");
+  expect(savedDialog).toHaveTextContent("Drafts tab");
+  fireEvent.click(within(savedDialog).getByRole("button", { name: "View drafts" }));
+  expect(screen.getByRole("tab", { name: /Drafts/ })).toHaveAttribute("aria-selected", "true");
   fireEvent.click(screen.getByRole("button", { name: "Continue editing" }));
   expect(screen.getByLabelText(/Title/)).toHaveValue("My unfinished show");
   fireEvent.click(screen.getByRole("button", { name: "Discard" }));

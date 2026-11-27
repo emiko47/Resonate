@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { useSearchParams } from "react-router-dom";
 import EventMap from "./EventMap";
 import EventDialog from "./EventDialog";
@@ -32,6 +33,36 @@ function Tags({ genres }) {
   );
 }
 
+function SavedDraftDialog({ onClose, onViewDrafts }) {
+  const dialog = useRef(null);
+  useEffect(() => {
+    const element = dialog.current;
+    element.showModal();
+    return () => element.close();
+  }, []);
+  return createPortal(
+    <dialog
+      ref={dialog}
+      className="discard-dialog"
+      aria-labelledby="event-draft-saved-title"
+      aria-describedby="event-draft-saved-description"
+      onCancel={(event) => { event.preventDefault(); onClose(); }}
+    >
+      <h2 id="event-draft-saved-title">Event draft saved</h2>
+      <p id="event-draft-saved-description">
+        Your event is not published yet. Find it in the Drafts tab to continue editing and post it.
+      </p>
+      <div className="discard-dialog-actions">
+        <button type="button" onClick={onClose}>Close</button>
+        <button type="button" className="event-primary" autoFocus onClick={onViewDrafts}>
+          View drafts
+        </button>
+      </div>
+    </dialog>,
+    document.body,
+  );
+}
+
 function Events() {
   const [created, setCreated] = useState(() =>
     readEventsStorage(`${storageKey}.created`, []),
@@ -50,6 +81,7 @@ function Events() {
   const [genre, setGenre] = useState("");
   const [highlight, setHighlight] = useState(null);
   const [editing, setEditing] = useState(null);
+  const [draftSaved, setDraftSaved] = useState(false);
   const [notice, setNotice] = useState("");
   const [params, setParams] = useSearchParams();
   const events = [...sampleEvents, ...created].sort((a, b) =>
@@ -336,6 +368,7 @@ function Events() {
               ]);
               setEditing(null);
               setNotice("Draft saved. Find it in Drafts.");
+              setDraftSaved(true);
             }}
             onDiscard={() => {
               setDrafts((previous) =>
@@ -345,6 +378,12 @@ function Events() {
             }}
           />
         </EventDialog>
+      )}
+      {draftSaved && (
+        <SavedDraftDialog
+          onClose={() => setDraftSaved(false)}
+          onViewDrafts={() => { setTab("Drafts"); setDraftSaved(false); }}
+        />
       )}
       {selected && !editing && (
         <EventDialog title={selected.title} onClose={close}>
