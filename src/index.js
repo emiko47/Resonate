@@ -18,8 +18,11 @@ import Search from "./Search";
 import Profile from "./Profile";
 import AccountAccess from "./AccountAccess";
 import { DemoAuthProvider } from "./DemoAuth";
+import { initMockData } from "./mockdata/MockDataStorage";
 import "./cssfiles/theme.css";
 import "./cssfiles/creationflows.css";
+
+initMockData();
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
