@@ -4,7 +4,7 @@ import Select from 'react-select';
 import './cssfiles/commoncomponents.css';
 import { stringToColour, calculateDropdownPosition } from './Functions';
 
-import { genres } from './mockdata/Genres';
+import { getJsonItem, genresStorageKey } from './mockdata/MockDataStorage';
 import { defaultUser } from './mockdata/Users';
 
 
@@ -25,7 +25,7 @@ function TagComponent({name, removableCallback = undefined}) {
 
 
 function TagList({names, editableCallback = undefined, creatable = false}) {
-  const [unselectedNames, setUnselectedNames] = useState(genres.filter(x => !names.includes(x)).map(x => ({label: x, value: x})));
+  const [unselectedNames, setUnselectedNames] = useState(getJsonItem(genresStorageKey).filter(x => !names.includes(x)).map(x => ({label: x, value: x})));
   const [selectedName, setSelectedName] = useState(null);
   const [dropdownIsVisible, setDropdownIsVisible] = useState(false);
   const [dropdownPosition, setDropdownPosition] = useState({

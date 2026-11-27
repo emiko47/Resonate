@@ -5,7 +5,7 @@ import Icon from './Icon';
 import { TagList } from './CommonComponents';
 import { formatTimeAgo } from './Functions';
 
-import { communitiesData } from './mockdata/Communities';
+import { getJsonItem, communitiesStorageKey } from './mockdata/MockDataStorage';
 import { defaultGenres } from './mockdata/Genres';
 
 function Communities() {
@@ -69,7 +69,7 @@ function Communities() {
 }
 
 function CommunityComponent({id}) {
-  const communityData = communitiesData[id];
+  const communityData = getJsonItem(communitiesStorageKey)[id];
   const navigate = useNavigate();
   return (
     <button class="communityPreview" onClick={() => {

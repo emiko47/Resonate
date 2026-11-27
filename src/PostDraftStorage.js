@@ -1,7 +1,9 @@
+import { setJsonItem, getJsonItem } from "./mockdata/MockDataStorage";
+
 export const postDraftKey = "resonate.post-drafts.v1";
 export function readPostDrafts() {
   try {
-    const saved = JSON.parse(localStorage.getItem(postDraftKey));
+    const saved = getJsonItem(postDraftKey);
     return Array.isArray(saved)
       ? saved.filter(
           (d) =>
@@ -23,18 +25,18 @@ export function savePostDraft(draft) {
       `post-draft-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
     updatedAt: new Date().toISOString(),
   };
-  localStorage.setItem(
+  setJsonItem(
     postDraftKey,
-    JSON.stringify([
+    [
       next,
       ...readPostDrafts().filter((item) => item.id !== next.id),
-    ]),
+    ],
   );
   return next;
 }
 export function removePostDraft(id) {
-  localStorage.setItem(
+  setJsonItem(
     postDraftKey,
-    JSON.stringify(readPostDrafts().filter((item) => item.id !== id)),
+    readPostDrafts().filter((item) => item.id !== id),
   );
 }
