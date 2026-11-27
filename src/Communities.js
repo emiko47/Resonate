@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './cssfiles/communities.css';
+import Icon from './Icon';
 import { TagList } from './CommonComponents';
 import { formatTimeAgo } from './Functions';
 
-import { communitiesData } from './mockdata/Communities';
+import { getJsonItem, communitiesStorageKey } from './mockdata/MockDataStorage';
 import { defaultGenres } from './mockdata/Genres';
 
 function Communities() {
@@ -46,7 +47,7 @@ function Communities() {
         </div>
         <button id="createCommunityButton" type="button" onClick={() => {
           navigate("../createcommunity");
-        }}>Create Community</button>
+        }}><Icon name="plus" size={17}/>Create Community</button>
       </div>
 
       {/* Filter pane */}
@@ -68,7 +69,7 @@ function Communities() {
 }
 
 function CommunityComponent({id}) {
-  const communityData = communitiesData[id];
+  const communityData = getJsonItem(communitiesStorageKey)[id];
   const navigate = useNavigate();
   return (
     <button class="communityPreview" onClick={() => {

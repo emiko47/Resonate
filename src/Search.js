@@ -1,3 +1,4 @@
+import BackButton from "./BackButton";
 import { useState, useRef } from "react";
 import "./cssfiles/search.css";
 import "./cssfiles/commoncomponents.css";
@@ -15,6 +16,7 @@ function Search() {
 
   return (
     <div id="searchRoot">
+      <BackButton to="/" label="Back to home"/>
       {/* Search criteria */}
       <div id="searchHeaderRow">
         <h2>Search</h2>
