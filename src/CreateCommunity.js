@@ -4,6 +4,7 @@ import "./cssfiles/createcommunity.css";
 import DiscardButton from "./DiscardButton";
 import Icon from "./Icon";
 import { genres as suggestedGenres } from "./mockdata/Genres";
+import { communitiesStorageKey, getJsonItem, setJsonItem } from "./mockdata/MockDataStorage";
 function CreateCommunity() {
   const navigate = useNavigate();
   const [name, setName] = useState("");
@@ -159,7 +160,19 @@ function CreateCommunity() {
         )}
         <div className="creation-actions">
           <div className="creation-primary-actions">
-            <button className="community-create-button" type="submit">
+            <button className="community-create-button" type="submit" onClick={() => {
+              const communityData = {
+                id: slug,
+                name: name,
+                description: description,
+                tags: genres,
+                lastPost: null,
+                numberPosts: 0
+              }
+              const allCommunities = getJsonItem(communitiesStorageKey);
+              allCommunities.push(communityData);
+              setJsonItem(communitiesStorageKey, allCommunities);
+            }}>
               <Icon name="plus" size={17} />
               Create Community
             </button>
