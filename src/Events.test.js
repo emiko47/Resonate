@@ -58,13 +58,13 @@ test("search and genre filters combine, and saved events survive a remount", () 
   ).toBeInTheDocument();
 });
 
-test("closing creation preserves current form as a draft, then discard removes it", () => {
+test("saving creation preserves the form as a draft, then discard removes it", () => {
   setup();
   fireEvent.click(screen.getByRole("button", { name: "Create Event" }));
   fireEvent.change(screen.getByLabelText(/Title/), {
     target: { value: "My unfinished show" },
   });
-  fireEvent.click(screen.getByRole("button", { name: "Close dialog" }));
+  fireEvent.click(screen.getByRole("button", { name: "Save for Later" }));
   fireEvent.click(screen.getByRole("tab", { name: /Drafts/ }));
   fireEvent.click(screen.getByRole("button", { name: "Continue editing" }));
   expect(screen.getByLabelText(/Title/)).toHaveValue("My unfinished show");
@@ -143,9 +143,8 @@ test("address lookup places a pin and map selection fills the address", async ()
 test("an empty event requires explicit discard confirmation", () => {
   setup();
   fireEvent.click(screen.getByRole("button", { name: "Create Event" }));
-  expect(
-    screen.getByRole("button", { name: "Back to events" }),
-  ).toBeInTheDocument();
+  expect(screen.queryByRole("button", { name: "Back to events" })).not.toBeInTheDocument();
+  expect(screen.queryByRole("button", { name: "Close dialog" })).not.toBeInTheDocument();
   fireEvent.click(screen.getByRole("button", { name: "Discard", exact: true }));
   expect(screen.getByRole("alertdialog")).toHaveTextContent(
     "Discard this event?",
@@ -154,10 +153,13 @@ test("an empty event requires explicit discard confirmation", () => {
   expect(screen.getByLabelText(/Title/)).toHaveValue("");
 });
 
-test("Back leaves an empty event without creating a blank draft", () => {
+test("Escape and clicking outside do not close event creation", () => {
   setup();
   fireEvent.click(screen.getByRole("button", { name: "Create Event" }));
-  fireEvent.click(screen.getByRole("button", { name: "Back to events" }));
-  fireEvent.click(screen.getByRole("tab", { name: /Drafts/ }));
-  expect(screen.getByText(/No drafts yet/)).toBeInTheDocument();
+  const dialog = screen.getByRole("dialog");
+  const cancel = new Event("cancel", { bubbles: true, cancelable: true });
+  fireEvent(dialog, cancel);
+  expect(cancel.defaultPrevented).toBe(true);
+  fireEvent.click(dialog, { clientX: -1, clientY: -1 });
+  expect(screen.getByLabelText(/Title/)).toBeInTheDocument();
 });

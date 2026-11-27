@@ -16,7 +16,7 @@ export default function EventMap({
   const callbacks = useRef({ onSelect, onHighlight, onPick });
   callbacks.current = { onSelect, onHighlight, onPick };
   useEffect(() => {
-    const map = L.map(element.current, { scrollWheelZoom: false }).setView(
+    const map = L.map(element.current, { scrollWheelZoom: true }).setView(
       [51.045, -114.06],
       13,
     );

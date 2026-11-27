@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import Icon from "./Icon";
 
-export default function EventDialog({ title, onClose, children }) {
+export default function EventDialog({ title, onClose, children, requireAction = false }) {
   const ref = useRef(null);
   useEffect(() => {
     const previous = document.activeElement;
@@ -20,10 +20,10 @@ export default function EventDialog({ title, onClose, children }) {
       aria-labelledby="event-dialog-title"
       onCancel={(e) => {
         e.preventDefault();
-        onClose();
+        if (!requireAction) onClose();
       }}
       onClick={(e) => {
-        if (e.target === e.currentTarget) {
+        if (!requireAction && e.target === e.currentTarget) {
           const r = e.currentTarget.getBoundingClientRect();
           if (
             e.clientX < r.left ||
@@ -36,23 +36,23 @@ export default function EventDialog({ title, onClose, children }) {
       }}
     >
       <header className="event-dialog-header">
-        <button
+        {!requireAction && <button
           type="button"
           className="event-dialog-back screen-back"
           onClick={onClose}
         >
           <Icon name="left" size={15} />
           Back to events
-        </button>
+        </button>}
         <h2 id="event-dialog-title">{title}</h2>
-        <button
+        {!requireAction && <button
           type="button"
           className="event-close"
           aria-label="Close dialog"
           onClick={onClose}
         >
           ×
-        </button>
+        </button>}
       </header>
       {children}
     </dialog>,

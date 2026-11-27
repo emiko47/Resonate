@@ -10,7 +10,6 @@ export default function CreateEvent({
   onPublish,
   onSave,
   onDiscard,
-  onDraftChange,
 }) {
   const [form, setForm] = useState(initial || emptyEvent);
   const [error, setError] = useState("");
@@ -73,9 +72,6 @@ export default function CreateEvent({
         setLocationStatus("Could not find an address for this pin. Enter one manually.");
     }
   }
-  useEffect(() => {
-    onDraftChange(form);
-  }, [form, onDraftChange]);
   const update = (key, value) =>
     setForm((previous) => ({ ...previous, [key]: value }));
   const today = new Date().toLocaleDateString("en-CA");

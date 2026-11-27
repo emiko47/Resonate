@@ -16,7 +16,7 @@ Branch: `events-screen`, based on `origin/main` (`e3d19211`).
 - Map pins open details; hovering a pin highlights its associated card.
 - Detail dialog with date, Calgary time, address, lineup, sample compatibility, attendance, RSVP, save, and share.
 - Creation dialog with title limit, description, genre tags, venue/address, map location, date/time, lineup, and optional external ticket URL.
-- Save for Later, resume/delete drafts, and recovery when closing creation with Escape or the close button.
+- Save for Later and resume/delete drafts; creation closes after saving, posting, or confirming discard.
 - Browser-local persistence for posted events, drafts, saved events, and RSVPs.
 - Native modal focus containment, Escape dismissal, focus restoration, and responsive layout.
 

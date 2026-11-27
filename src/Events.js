@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import EventMap from "./EventMap";
 import EventDialog from "./EventDialog";
@@ -50,7 +50,6 @@ function Events() {
   const [genre, setGenre] = useState("");
   const [highlight, setHighlight] = useState(null);
   const [editing, setEditing] = useState(null);
-  const draftSnapshot = useRef({});
   const [notice, setNotice] = useState("");
   const [params, setParams] = useSearchParams();
   const events = [...sampleEvents, ...created].sort((a, b) =>
@@ -128,19 +127,6 @@ function Events() {
     setGenre("");
     setNotice("Your event has been posted in this browser.");
     open(id);
-  }
-  function closeEditor() {
-    const snapshot = draftSnapshot.current;
-    const hasContent = Object.values(snapshot).some((value) =>
-      Array.isArray(value) ? value.length > 0 : Boolean(value),
-    );
-    if (hasContent || editing.id) {
-      setDrafts((previous) => [
-        ...previous.filter((draft) => draft.id !== editing.id),
-        { ...snapshot, id: editing.id || `draft-${Date.now()}` },
-      ]);
-    }
-    setEditing(null);
   }
   return (
     <div className="events-page">
@@ -338,12 +324,9 @@ function Events() {
       {editing && (
         <EventDialog
           title={editing.id ? "Continue your event" : "Create Event"}
-          onClose={closeEditor}
+          requireAction
         >
           <CreateEvent
-            onDraftChange={(form) => {
-              draftSnapshot.current = form;
-            }}
             initial={editing.title !== undefined ? editing : undefined}
             onPublish={publish}
             onSave={(form) => {
