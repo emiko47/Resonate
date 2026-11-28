@@ -57,9 +57,34 @@
 }
 .events-filters {
   display: grid;
-  grid-template-columns: 1fr 140px;
+  grid-template-columns: minmax(0, 1fr) 140px;
   gap: 12px;
   margin-bottom: 16px;
+}
+.event-date-filter {
+  grid-column: 1 / -1;
+  color: var(--ink);
+  font-size: 12px;
+}
+.event-date-filter summary {
+  cursor: pointer;
+  width: fit-content;
+  padding: 5px 0;
+}
+.event-date-fields {
+  display: flex;
+  align-items: end;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding-top: 8px;
+}
+.event-date-fields label { width: 160px; max-width: 100%; }
+.event-date-fields button {
+  border: 0;
+  background: transparent;
+  padding: 11px 4px;
+  color: var(--orange-deep);
+  cursor: pointer;
 }
 .events-filters label {
   display: flex;
@@ -91,6 +116,20 @@
   min-height: 0;
   overflow-y: auto;
   padding: 2px 5px 2px 2px;
+}
+.event-list-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.event-list-group + .event-list-group {
+  border-top: 1px solid var(--line);
+  margin-top: 8px;
+  padding-top: 20px;
+}
+.event-list-group-heading {
+  margin: 0;
+  font-size: 14px;
 }
 .event-card {
   display: flex;

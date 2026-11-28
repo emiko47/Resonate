@@ -709,7 +709,7 @@ textarea {
   font-size: 12px;
 }
 .events-filters {
-  grid-template-columns: 1fr 140px;
+  grid-template-columns: minmax(0, 1fr) 140px;
   gap: 12px;
   margin-bottom: 20px;
 }

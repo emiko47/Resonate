@@ -105,6 +105,8 @@ function Events() {
   const [tab, setTab] = useState("Discover");
   const [query, setQuery] = useState("");
   const [genre, setGenre] = useState("");
+  const [dateFrom, setDateFrom] = useState("");
+  const [dateTo, setDateTo] = useState("");
   const [highlight, setHighlight] = useState(null);
   const [editing, setEditing] = useState(null);
   const [draftSaved, setDraftSaved] = useState(false);
@@ -117,12 +119,20 @@ function Events() {
   const selected = events.find((event) => event.id === params.get("event"));
   const visible = events.filter(
     (event) =>
-      (tab !== "Saved Events" || saved.includes(event.id)) &&
+      (tab !== "Saved Events" || saved.includes(event.id) || going.includes(event.id)) &&
       (!genre || event.genres.includes(genre)) &&
+      (!dateFrom || event.date >= dateFrom) &&
+      (!dateTo || event.date <= dateTo) &&
       `${event.title} ${event.description} ${event.host} ${event.location} ${event.lineup.join(" ")}`
         .toLowerCase()
         .includes(query.toLowerCase()),
   );
+  const eventGroups = tab === "Saved Events"
+    ? [
+        { title: "Saved events", events: visible.filter((event) => saved.includes(event.id)), empty: "No saved events match your filters." },
+        { title: "RSVPed events", events: visible.filter((event) => going.includes(event.id)), empty: "No RSVPed events match your filters." },
+      ]
+    : [{ title: null, events: visible, empty: "No events match your search." }];
   useEffect(() => {
     try {
       for (const [key, value] of Object.entries({
@@ -184,6 +194,8 @@ function Events() {
     setTab("Discover");
     setQuery("");
     setGenre("");
+    setDateFrom("");
+    setDateTo("");
     setNotice("Your event has been posted in this browser.");
     open(id);
   }
@@ -246,6 +258,24 @@ function Events() {
                 ))}
               </select>
             </label>
+            <details className="event-date-filter">
+              <summary>
+                Dates {dateFrom || dateTo ? `· ${dateFrom || "Any date"} – ${dateTo || "Any date"}` : "· Any date"}
+              </summary>
+              <div className="event-date-fields">
+                <label>
+                  From date
+                  <input type="date" value={dateFrom} max={dateTo || undefined}
+                    onChange={(e) => setDateFrom(e.target.value)} />
+                </label>
+                <label>
+                  To date
+                  <input type="date" value={dateTo} min={dateFrom || undefined}
+                    onChange={(e) => setDateTo(e.target.value)} />
+                </label>
+                {(dateFrom || dateTo) && <button type="button" onClick={() => { setDateFrom(""); setDateTo(""); }}>Clear dates</button>}
+              </div>
+            </details>
           </div>
         )}
         <div className="event-list" aria-label={tab}>
@@ -278,8 +308,10 @@ function Events() {
                 No drafts yet. Save an event for later to find it here.
               </p>
             )
-          ) : visible.length ? (
-            visible.map((event) => (
+          ) : eventGroups.map((group) => (
+            <section className="event-list-group" key={group.title || "discover"} aria-label={group.title || undefined}>
+              {group.title && <h3 className="event-list-group-heading">{group.title}</h3>}
+              {group.events.length ? group.events.map((event) => (
               <article
                 key={event.id}
                 className={`event-card ${highlight === event.id ? "is-highlighted" : ""}`}
@@ -329,24 +361,23 @@ function Events() {
                   </div>
                 </div>
               </article>
-            ))
-          ) : (
+            )) : (
             <div className="event-empty">
-              <p>
-                {tab === "Saved Events"
-                  ? "No saved events match your filters."
-                  : "No events match your search."}
-              </p>
-              <button
+              <p>{group.empty}</p>
+              {(query || genre || dateFrom || dateTo) && <button
                 onClick={() => {
                   setQuery("");
                   setGenre("");
+                  setDateFrom("");
+                  setDateTo("");
                 }}
               >
                 Clear filters
-              </button>
+              </button>}
             </div>
-          )}
+              )}
+            </section>
+          ))}
         </div>
         <footer className="events-list-footer">
           {demoCreator.verifiedArtist && (

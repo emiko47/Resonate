@@ -58,6 +58,39 @@ test("search and genre filters combine, and saved events survive a remount", () 
   ).toBeInTheDocument();
 });
 
+test("date range filters combine with genre and can be cleared", () => {
+  setup();
+  fireEvent.click(screen.getByText("Dates · Any date"));
+  fireEvent.change(screen.getByLabelText("From date"), { target: { value: "2026-11-07" } });
+  fireEvent.change(screen.getByLabelText("To date"), { target: { value: "2026-11-13" } });
+  expect(screen.getAllByRole("article")).toHaveLength(2);
+  fireEvent.change(screen.getByLabelText("Genre"), { target: { value: "Jazz" } });
+  expect(screen.getAllByRole("article")).toHaveLength(1);
+  expect(screen.getByText("Jazz in the Park")).toBeInTheDocument();
+  fireEvent.change(screen.getByLabelText("From date"), { target: { value: "2026-11-08" } });
+  expect(screen.getByText("No events match your search.")).toBeInTheDocument();
+  fireEvent.click(screen.getByRole("button", { name: "Clear filters" }));
+  expect(screen.getByLabelText("From date")).toHaveValue("");
+  expect(screen.getByLabelText("To date")).toHaveValue("");
+  expect(screen.getAllByRole("article")).toHaveLength(4);
+});
+
+test("Saved Events separates saved and RSVPed events while applying filters", () => {
+  localStorage.setItem("resonate.events.v1.saved", JSON.stringify(["sebastian-live", "jazz-in-the-park"]));
+  localStorage.setItem("resonate.events.v1.going", JSON.stringify(["jazz-in-the-park", "bedroom-pop"]));
+  setup();
+  fireEvent.click(screen.getByRole("tab", { name: "Saved Events" }));
+  const savedSection = screen.getByRole("region", { name: "Saved events" });
+  const rsvpSection = screen.getByRole("region", { name: "RSVPed events" });
+  expect(within(savedSection).getAllByRole("article")).toHaveLength(2);
+  expect(within(rsvpSection).getAllByRole("article")).toHaveLength(2);
+  expect(within(savedSection).getByText("Jazz in the Park")).toBeInTheDocument();
+  expect(within(rsvpSection).getByText("Jazz in the Park")).toBeInTheDocument();
+  fireEvent.change(screen.getByLabelText("Genre"), { target: { value: "Dream Pop" } });
+  expect(within(savedSection).getByText("No saved events match your filters.")).toBeInTheDocument();
+  expect(within(rsvpSection).getByText("A Little Dream Pop")).toBeInTheDocument();
+});
+
 test("saving creation preserves the form as a draft, then discard removes it", () => {
   setup();
   fireEvent.click(screen.getByRole("button", { name: "Create Event" }));
@@ -122,9 +155,9 @@ test("publishing validates the location and adds a persistent event with RSVP", 
   fireEvent.click(within(dialog).getByRole("button", { name: "RSVP" }));
   fireEvent.click(within(screen.getByRole("dialog", { name: "Confirm your RSVP" })).getByRole("button", { name: "Confirm RSVP" }));
   expect(
-    within(dialog).getByRole("button", { name: "Going ✓" }),
+    within(dialog).getByRole("button", { name: "Going" }),
   ).toHaveAttribute("aria-pressed", "true");
-  expect(within(dialog).getByRole("button", { name: "Going ✓" })).toHaveClass("event-rsvp-active");
+  expect(within(dialog).getByRole("button", { name: "Going" })).toHaveClass("event-rsvp-active");
   view.unmount();
   setup();
   expect(
