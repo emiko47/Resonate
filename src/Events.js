@@ -4,6 +4,7 @@ import { useSearchParams } from "react-router-dom";
 import EventMap from "./EventMap";
 import EventDialog from "./EventDialog";
 import CreateEvent from "./CreateEvent";
+import DiscardButton from "./DiscardButton";
 import Icon from "./Icon";
 import { stringToColour } from "./Functions";
 import {
@@ -291,15 +292,18 @@ function Events() {
                     <button onClick={() => setEditing(draft)}>
                       Continue editing
                     </button>
-                    <button
-                      onClick={() =>
+                    <DiscardButton
+                      label="Delete"
+                      title="Delete this event draft?"
+                      description="This draft will be permanently deleted. This cannot be undone."
+                      cancelLabel="Keep draft"
+                      confirmLabel="Delete draft"
+                      onDiscard={() =>
                         setDrafts((previous) =>
                           previous.filter((d) => d.id !== draft.id),
                         )
                       }
-                    >
-                      Delete
-                    </button>
+                    />
                   </div>
                 </article>
               ))

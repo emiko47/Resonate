@@ -91,6 +91,21 @@ test("Saved Events separates saved and RSVPed events while applying filters", ()
   expect(within(rsvpSection).getByText("A Little Dream Pop")).toBeInTheDocument();
 });
 
+test("deleting an event draft requires confirmation", () => {
+  localStorage.setItem("resonate.events.v1.drafts", JSON.stringify([{ id: "draft-1", title: "Unfinished show" }]));
+  setup();
+  fireEvent.click(screen.getByRole("tab", { name: /Drafts/ }));
+  fireEvent.click(screen.getByRole("button", { name: "Delete" }));
+  let confirmation = screen.getByRole("alertdialog", { name: "Delete this event draft?" });
+  fireEvent.click(within(confirmation).getByRole("button", { name: "Keep draft" }));
+  expect(screen.getByText("Unfinished show")).toBeInTheDocument();
+  fireEvent.click(screen.getByRole("button", { name: "Delete" }));
+  confirmation = screen.getByRole("alertdialog", { name: "Delete this event draft?" });
+  fireEvent.click(within(confirmation).getByRole("button", { name: "Delete draft" }));
+  expect(screen.queryByText("Unfinished show")).not.toBeInTheDocument();
+  expect(JSON.parse(localStorage.getItem("resonate.events.v1.drafts"))).toHaveLength(0);
+});
+
 test("saving creation preserves the form as a draft, then discard removes it", () => {
   setup();
   fireEvent.click(screen.getByRole("button", { name: "Create Event" }));

@@ -8,6 +8,10 @@ export default function DiscardButton({
   className = "",
   label = "Discard",
   icon = "trash",
+  title,
+  description,
+  cancelLabel = "Keep editing",
+  confirmLabel,
 }) {
   const [open, setOpen] = useState(false);
   const dialog = useRef(null);
@@ -52,14 +56,13 @@ export default function DiscardButton({
             <div className="discard-symbol">
               <Icon name="warning" size={26} />
             </div>
-            <h2 id={titleId}>Discard this {subject}?</h2>
+            <h2 id={titleId}>{title || `Discard this ${subject}?`}</h2>
             <p id={bodyId}>
-              Your current {subject} details will be lost. This cannot be
-              undone.
+              {description || `Your current ${subject} details will be lost. This cannot be undone.`}
             </p>
             <div className="discard-dialog-actions">
               <button autoFocus type="button" onClick={() => setOpen(false)}>
-                Keep editing
+                {cancelLabel}
               </button>
               <button
                 type="button"
@@ -70,7 +73,7 @@ export default function DiscardButton({
                 }}
               >
                 <Icon name="trash" size={17} />
-                Discard {subject}
+                {confirmLabel || `Discard ${subject}`}
               </button>
             </div>
           </dialog>,
