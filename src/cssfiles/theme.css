@@ -795,6 +795,11 @@ textarea {
   background: var(--orange-soft);
   color: #a63c00;
 }
+.event-actions button.event-rsvp-active[aria-pressed="true"] {
+  background: var(--orange);
+  border-color: var(--orange);
+  color: var(--ink);
+}
 .event-primary,
 .event-actions .event-primary {
   background: var(--orange);

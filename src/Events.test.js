@@ -115,9 +115,16 @@ test("publishing validates the location and adds a persistent event with RSVP", 
     within(dialog).getByRole("heading", { name: "My test show" }),
   ).toBeInTheDocument();
   fireEvent.click(within(dialog).getByRole("button", { name: "RSVP" }));
+  const confirmation = screen.getByRole("dialog", { name: "Confirm your RSVP" });
+  expect(confirmation).toHaveTextContent("does not guarantee a spot or ticket");
+  expect(within(dialog).getByRole("button", { name: "RSVP" })).toHaveAttribute("aria-pressed", "false");
+  fireEvent.click(within(confirmation).getByRole("button", { name: "Cancel" }));
+  fireEvent.click(within(dialog).getByRole("button", { name: "RSVP" }));
+  fireEvent.click(within(screen.getByRole("dialog", { name: "Confirm your RSVP" })).getByRole("button", { name: "Confirm RSVP" }));
   expect(
     within(dialog).getByRole("button", { name: "Going ✓" }),
   ).toHaveAttribute("aria-pressed", "true");
+  expect(within(dialog).getByRole("button", { name: "Going ✓" })).toHaveClass("event-rsvp-active");
   view.unmount();
   setup();
   expect(

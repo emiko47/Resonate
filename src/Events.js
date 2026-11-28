@@ -63,6 +63,32 @@ function SavedDraftDialog({ onClose, onViewDrafts }) {
   );
 }
 
+function RsvpDialog({ onCancel, onConfirm }) {
+  const dialog = useRef(null);
+  useEffect(() => {
+    const previous = document.activeElement;
+    const element = dialog.current;
+    element.showModal();
+    return () => { element.close(); previous?.focus(); };
+  }, []);
+  return createPortal(
+    <dialog ref={dialog} className="discard-dialog" aria-labelledby="rsvp-title"
+      aria-describedby="rsvp-description" onCancel={(event) => { event.preventDefault(); event.stopPropagation(); onCancel(); }}>
+      <h2 id="rsvp-title">Confirm your RSVP</h2>
+      <p id="rsvp-description">
+        An RSVP does not guarantee a spot or ticket. It is a cosmetic indication
+        of interest intended to help artists gauge engagement on Resonate. To
+        purchase a ticket, use the external ticket link or look for details in
+        the event description.
+      </p>
+      <div className="discard-dialog-actions">
+        <button type="button" autoFocus onClick={onCancel}>Cancel</button>
+        <button type="button" className="event-primary" onClick={onConfirm}>Confirm RSVP</button>
+      </div>
+    </dialog>, document.body,
+  );
+}
+
 function Events() {
   const [created, setCreated] = useState(() =>
     readEventsStorage(`${storageKey}.created`, []),
@@ -82,6 +108,7 @@ function Events() {
   const [highlight, setHighlight] = useState(null);
   const [editing, setEditing] = useState(null);
   const [draftSaved, setDraftSaved] = useState(false);
+  const [confirmRsvp, setConfirmRsvp] = useState(false);
   const [notice, setNotice] = useState("");
   const [params, setParams] = useSearchParams();
   const events = [...sampleEvents, ...created].sort((a, b) =>
@@ -445,12 +472,12 @@ function Events() {
             </section>
             <footer className="event-actions">
               <button
-                className="event-primary"
+                className={going.includes(selected.id) ? "event-rsvp-active" : undefined}
                 aria-pressed={going.includes(selected.id)}
-                onClick={() => toggle(setGoing, selected.id)}
+                onClick={() => going.includes(selected.id) ? toggle(setGoing, selected.id) : setConfirmRsvp(true)}
               >
                 <Icon name="check" size={16} />
-                {going.includes(selected.id) ? "Going ✓" : "RSVP"}
+                {going.includes(selected.id) ? "Going" : "RSVP"}
               </button>
               <button
                 aria-pressed={saved.includes(selected.id)}
@@ -477,6 +504,12 @@ function Events() {
             </p>
           </div>
         </EventDialog>
+      )}
+      {confirmRsvp && selected && (
+        <RsvpDialog
+          onCancel={() => setConfirmRsvp(false)}
+          onConfirm={() => { toggle(setGoing, selected.id); setConfirmRsvp(false); }}
+        />
       )}
     </div>
   );
