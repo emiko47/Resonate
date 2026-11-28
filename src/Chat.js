@@ -1,3 +1,4 @@
+import BackButton from "./BackButton";
 import { useState } from "react";
 import "./cssfiles/chat.css";
 import { formatTimeAgo, formatTimeAgoOrDate } from "./Functions";
@@ -10,6 +11,7 @@ function Chat() {
 
   return (
     <div id="chatRoot">
+      <BackButton to="/" label="Back to home" className="grid-screen-back"/>
       <div id="chatLeft">
         <div id="chatList">
           {chats.map((chat, index) => {

@@ -1,8 +1,11 @@
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { useSearchParams } from "react-router-dom";
 import EventMap from "./EventMap";
 import EventDialog from "./EventDialog";
 import CreateEvent from "./CreateEvent";
+import DiscardButton from "./DiscardButton";
+import Icon from "./Icon";
 import { stringToColour } from "./Functions";
 import {
   sampleEvents,
@@ -31,6 +34,62 @@ function Tags({ genres }) {
   );
 }
 
+function SavedDraftDialog({ onClose, onViewDrafts }) {
+  const dialog = useRef(null);
+  useEffect(() => {
+    const element = dialog.current;
+    element.showModal();
+    return () => element.close();
+  }, []);
+  return createPortal(
+    <dialog
+      ref={dialog}
+      className="discard-dialog"
+      aria-labelledby="event-draft-saved-title"
+      aria-describedby="event-draft-saved-description"
+      onCancel={(event) => { event.preventDefault(); onClose(); }}
+    >
+      <h2 id="event-draft-saved-title">Event draft saved</h2>
+      <p id="event-draft-saved-description">
+        Your event is not published yet. Find it in the Drafts tab to continue editing and post it.
+      </p>
+      <div className="discard-dialog-actions">
+        <button type="button" onClick={onClose}>Close</button>
+        <button type="button" className="event-primary" autoFocus onClick={onViewDrafts}>
+          View drafts
+        </button>
+      </div>
+    </dialog>,
+    document.body,
+  );
+}
+
+function RsvpDialog({ onCancel, onConfirm }) {
+  const dialog = useRef(null);
+  useEffect(() => {
+    const previous = document.activeElement;
+    const element = dialog.current;
+    element.showModal();
+    return () => { element.close(); previous?.focus(); };
+  }, []);
+  return createPortal(
+    <dialog ref={dialog} className="discard-dialog" aria-labelledby="rsvp-title"
+      aria-describedby="rsvp-description" onCancel={(event) => { event.preventDefault(); event.stopPropagation(); onCancel(); }}>
+      <h2 id="rsvp-title">Confirm your RSVP</h2>
+      <p id="rsvp-description">
+        An RSVP does not guarantee a spot or ticket. It is a cosmetic indication
+        of interest intended to help artists gauge engagement on Resonate. To
+        purchase a ticket, use the external ticket link or look for details in
+        the event description.
+      </p>
+      <div className="discard-dialog-actions">
+        <button type="button" autoFocus onClick={onCancel}>Cancel</button>
+        <button type="button" className="event-primary" onClick={onConfirm}>Confirm RSVP</button>
+      </div>
+    </dialog>, document.body,
+  );
+}
+
 function Events() {
   const [created, setCreated] = useState(() =>
     readEventsStorage(`${storageKey}.created`, []),
@@ -47,9 +106,12 @@ function Events() {
   const [tab, setTab] = useState("Discover");
   const [query, setQuery] = useState("");
   const [genre, setGenre] = useState("");
+  const [dateFrom, setDateFrom] = useState("");
+  const [dateTo, setDateTo] = useState("");
   const [highlight, setHighlight] = useState(null);
   const [editing, setEditing] = useState(null);
-  const draftSnapshot = useRef({});
+  const [draftSaved, setDraftSaved] = useState(false);
+  const [confirmRsvp, setConfirmRsvp] = useState(false);
   const [notice, setNotice] = useState("");
   const [params, setParams] = useSearchParams();
   const events = [...sampleEvents, ...created].sort((a, b) =>
@@ -58,12 +120,20 @@ function Events() {
   const selected = events.find((event) => event.id === params.get("event"));
   const visible = events.filter(
     (event) =>
-      (tab !== "Saved Events" || saved.includes(event.id)) &&
+      (tab !== "Saved Events" || saved.includes(event.id) || going.includes(event.id)) &&
       (!genre || event.genres.includes(genre)) &&
+      (!dateFrom || event.date >= dateFrom) &&
+      (!dateTo || event.date <= dateTo) &&
       `${event.title} ${event.description} ${event.host} ${event.location} ${event.lineup.join(" ")}`
         .toLowerCase()
         .includes(query.toLowerCase()),
   );
+  const eventGroups = tab === "Saved Events"
+    ? [
+        { title: "Saved events", events: visible.filter((event) => saved.includes(event.id)), empty: "No saved events match your filters." },
+        { title: "RSVPed events", events: visible.filter((event) => going.includes(event.id)), empty: "No RSVPed events match your filters." },
+      ]
+    : [{ title: null, events: visible, empty: "No events match your search." }];
   useEffect(() => {
     try {
       for (const [key, value] of Object.entries({
@@ -125,6 +195,8 @@ function Events() {
     setTab("Discover");
     setQuery("");
     setGenre("");
+    setDateFrom("");
+    setDateTo("");
     setNotice("Your event has been posted in this browser.");
     open(id);
   }
@@ -136,7 +208,10 @@ function Events() {
             <p>Discover</p>
             <h2 id="events-heading">Events</h2>
           </div>
-          <span className="event-muted">Calgary, AB</span>
+          <span className="event-muted">
+            <Icon name="pin" size={14} />
+            Calgary, AB
+          </span>
         </header>
         <div className="events-tabs" role="tablist" aria-label="Event lists">
           {["Discover", "Saved Events", "Drafts"].map((name) => (
@@ -147,6 +222,16 @@ function Events() {
               aria-selected={tab === name}
               onClick={() => setTab(name)}
             >
+              <Icon
+                name={
+                  name === "Discover"
+                    ? "explore"
+                    : name === "Saved Events"
+                      ? "bookmark"
+                      : "edit"
+                }
+                size={15}
+              />
               {name}
               {name === "Drafts" && drafts.length > 0
                 ? ` (${drafts.length})`
@@ -174,6 +259,24 @@ function Events() {
                 ))}
               </select>
             </label>
+            <details className="event-date-filter">
+              <summary>
+                Dates {dateFrom || dateTo ? `· ${dateFrom || "Any date"} – ${dateTo || "Any date"}` : "· Any date"}
+              </summary>
+              <div className="event-date-fields">
+                <label>
+                  From date
+                  <input type="date" value={dateFrom} max={dateTo || undefined}
+                    onChange={(e) => setDateFrom(e.target.value)} />
+                </label>
+                <label>
+                  To date
+                  <input type="date" value={dateTo} min={dateFrom || undefined}
+                    onChange={(e) => setDateTo(e.target.value)} />
+                </label>
+                {(dateFrom || dateTo) && <button type="button" onClick={() => { setDateFrom(""); setDateTo(""); }}>Clear dates</button>}
+              </div>
+            </details>
           </div>
         )}
         <div className="event-list" aria-label={tab}>
@@ -189,15 +292,18 @@ function Events() {
                     <button onClick={() => setEditing(draft)}>
                       Continue editing
                     </button>
-                    <button
-                      onClick={() =>
+                    <DiscardButton
+                      label="Delete"
+                      title="Delete this event draft?"
+                      description="This draft will be permanently deleted. This cannot be undone."
+                      cancelLabel="Keep draft"
+                      confirmLabel="Delete draft"
+                      onDiscard={() =>
                         setDrafts((previous) =>
                           previous.filter((d) => d.id !== draft.id),
                         )
                       }
-                    >
-                      Delete
-                    </button>
+                    />
                   </div>
                 </article>
               ))
@@ -206,8 +312,10 @@ function Events() {
                 No drafts yet. Save an event for later to find it here.
               </p>
             )
-          ) : visible.length ? (
-            visible.map((event) => (
+          ) : eventGroups.map((group) => (
+            <section className="event-list-group" key={group.title || "discover"} aria-label={group.title || undefined}>
+              {group.title && <h3 className="event-list-group-heading">{group.title}</h3>}
+              {group.events.length ? group.events.map((event) => (
               <article
                 key={event.id}
                 className={`event-card ${highlight === event.id ? "is-highlighted" : ""}`}
@@ -235,13 +343,14 @@ function Events() {
                       className="event-text-button"
                       onClick={() => open(event.id)}
                     >
-                      View details →
+                      View details <Icon name="arrow" size={13} />
                     </button>
                     <div className="event-actions">
                       <button
                         aria-label={`Share ${event.title}`}
                         onClick={() => share(event)}
                       >
+                        <Icon name="share" size={14} />
                         Share
                       </button>
                       <button
@@ -249,30 +358,30 @@ function Events() {
                         aria-pressed={saved.includes(event.id)}
                         onClick={() => toggle(setSaved, event.id)}
                       >
+                        <Icon name="bookmark" size={14} />
                         {saved.includes(event.id) ? "Saved" : "Save"}
                       </button>
                     </div>
                   </div>
                 </div>
               </article>
-            ))
-          ) : (
+            )) : (
             <div className="event-empty">
-              <p>
-                {tab === "Saved Events"
-                  ? "No saved events match your filters."
-                  : "No events match your search."}
-              </p>
-              <button
+              <p>{group.empty}</p>
+              {(query || genre || dateFrom || dateTo) && <button
                 onClick={() => {
                   setQuery("");
                   setGenre("");
+                  setDateFrom("");
+                  setDateTo("");
                 }}
               >
                 Clear filters
-              </button>
+              </button>}
             </div>
-          )}
+              )}
+            </section>
+          ))}
         </div>
         <footer className="events-list-footer">
           {demoCreator.verifiedArtist && (
@@ -280,10 +389,11 @@ function Events() {
               className="create-event-button event-primary"
               onClick={() => setEditing({})}
             >
+              <Icon name="plus" size={17} />
               Create Event
             </button>
           )}
-          <span className="event-muted">Artist account · prototype</span>
+          <span className="event-muted">Share a local performance</span>
         </footer>
         <p className="event-notice" role="status">
           {notice}
@@ -308,21 +418,9 @@ function Events() {
       {editing && (
         <EventDialog
           title={editing.id ? "Continue your event" : "Create Event"}
-          onClose={() => {
-            setDrafts((previous) => [
-              ...previous.filter((d) => d.id !== editing.id),
-              {
-                ...draftSnapshot.current,
-                id: editing.id || `draft-${Date.now()}`,
-              },
-            ]);
-            setEditing(null);
-          }}
+          requireAction
         >
           <CreateEvent
-            onDraftChange={(form) => {
-              draftSnapshot.current = form;
-            }}
             initial={editing.title !== undefined ? editing : undefined}
             onPublish={publish}
             onSave={(form) => {
@@ -332,6 +430,7 @@ function Events() {
               ]);
               setEditing(null);
               setNotice("Draft saved. Find it in Drafts.");
+              setDraftSaved(true);
             }}
             onDiscard={() => {
               setDrafts((previous) =>
@@ -341,6 +440,12 @@ function Events() {
             }}
           />
         </EventDialog>
+      )}
+      {draftSaved && (
+        <SavedDraftDialog
+          onClose={() => setDraftSaved(false)}
+          onViewDrafts={() => { setTab("Drafts"); setDraftSaved(false); }}
+        />
       )}
       {selected && !editing && (
         <EventDialog title={selected.title} onClose={close}>
@@ -402,19 +507,24 @@ function Events() {
             </section>
             <footer className="event-actions">
               <button
-                className="event-primary"
+                className={going.includes(selected.id) ? "event-rsvp-active" : undefined}
                 aria-pressed={going.includes(selected.id)}
-                onClick={() => toggle(setGoing, selected.id)}
+                onClick={() => going.includes(selected.id) ? toggle(setGoing, selected.id) : setConfirmRsvp(true)}
               >
-                {going.includes(selected.id) ? "Going ✓" : "RSVP"}
+                <Icon name="check" size={16} />
+                {going.includes(selected.id) ? "Going" : "RSVP"}
               </button>
               <button
                 aria-pressed={saved.includes(selected.id)}
                 onClick={() => toggle(setSaved, selected.id)}
               >
+                <Icon name="bookmark" size={15} />
                 {saved.includes(selected.id) ? "Saved" : "Save Event"}
               </button>
-              <button onClick={() => share(selected)}>Share</button>
+              <button onClick={() => share(selected)}>
+                <Icon name="share" size={15} />
+                Share
+              </button>
               {selected.ticketUrl && (
                 <a href={selected.ticketUrl} target="_blank" rel="noreferrer">
                   External Ticket Link ↗
@@ -429,6 +539,12 @@ function Events() {
             </p>
           </div>
         </EventDialog>
+      )}
+      {confirmRsvp && selected && (
+        <RsvpDialog
+          onCancel={() => setConfirmRsvp(false)}
+          onConfirm={() => { toggle(setGoing, selected.id); setConfirmRsvp(false); }}
+        />
       )}
     </div>
   );
